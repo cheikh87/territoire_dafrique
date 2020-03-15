@@ -1,0 +1,322 @@
+<div class="row pt-2 pb-2">
+    <div class="col-sm-9">
+        <h4 class="page-title">Calendrier des seminaires et formation</h4>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Calendrier des seminaires et formation</li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="row">
+        <div class="col-lg-12">
+		      <div class="card">
+           <div class="card-body">
+
+        <div class="row">
+        
+           
+                    
+        <!-- Right Sidebar -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                </div>
+
+            
+
+            </div> <!-- End row -->
+            
+            <div class="card mt-3 shadow-none border border-light">
+                <div class="card-body">
+                   
+                   
+					
+			<div class="card" id="time-line-activity">
+            <div class="card-header">
+                       
+                     <button  title="Ajouter de nouvelelles données" style="float:right" id="new_s_">
+					<a ><i class="fa fa-long-arrow-right"></i> Ajouter <small class="badge float-right badge-info">+</small></a></button> </div>  
+            <div class="card-body">
+              <div >
+            
+
+
+ <table id="table_activites" class="table-bordered responsive" style="max-width:100%;">
+			   <caption> Liste des seminaires et formation<b> <span class='title_activity'></span></b>  </caption>
+                <thead>
+                    <tr style="max-width:200px">
+					    <th>Action</th>
+						<th>Date début</th>
+                        <th>Date de fin</th>
+                        <th>Description</th>
+						<th>Lieu</th>
+						<th>Type d'évenement</th>
+                       
+         
+                    </tr>
+                </thead>
+                <tbody>
+                 
+                </tbody>
+               
+            </table>
+      
+            </div>
+            </div>
+          </div>
+                    
+                  
+                </div> <!-- card body -->
+            </div> <!-- card -->
+        </div> <!-- end Col-9 -->
+                    
+                    </div><!-- End row -->
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+             </div>
+                    </div>
+        </div>
+      </div><!-- End row -->
+
+	  
+
+<!-- Mdoals -->
+
+
+
+				
+				
+				
+
+
+
+<div class="modal fade" id="new_s">
+                  <div class="modal-dialog">
+                    <div class="modal-content gradient-royal border-0">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-white"><i class="fa fa-star"></i> <span class="title_activity"></span> </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="">
+                       <div class="card">
+			    
+				<div class="card">
+			     <div class="card-body">
+				   <div class="card-title">Veuillez remplir les champs</div>
+				   <hr>
+				    <form id="form_add">
+					
+            <div class="form-group">
+              <label for="input-13">Type d'évenement</label>
+              <select id="type_evenement" name="type_evenement">
+			   <option value="Seminaire" selected>Séminaire </option>
+			   <option value="Formation">Formation </option>
+			  <select>
+		    </div>
+		   
+		   
+		     <div class="form-group">
+              <label for="input-13">Intitulé de l'evenement</label>
+              <textarea  class="form-control form-control-square description" id="description" name="description" placeholder="Intitulé"></textarea>
+             </div>
+		  
+              
+              <div class="form-group">
+              <label for="input-13">Date de début</label>
+              <input type="date"  class="form-control form-control-square" id="date_debut " name="date_debut " placeholder="Date début">
+             </div>
+        
+
+			<div class="form-group">
+              <label for="input-13">Date de fin</label>
+              <input type="date"  class="form-control form-control-square" id="date_fin " name="date_fin " placeholder="Date fin">
+             </div>
+           
+					 
+				<div class="form-group">
+              <label for="input-13">Lieu</label>
+               <textarea  class="form-control form-control-square description" id="lieu" name="lieu" placeholder="Lieu"></textarea>
+              </div>	 
+					 
+					 
+					 
+					 <input id="gid" name="gid" type="hidden">
+					 
+					
+          </form>
+          
+          <div class="form-group" id="import_file">
+              <label for="input-13">Importer le fichier</label>
+            <form id="upload_form" enctype="multipart/form-data" method="post">
+            <input type="file" name="nom_fichier" id="nom_fichier"><br>
+            <progress id="progressBar" value="0" max="100" style="width:100%"></progress>
+            <span id="description_du_doc"> </span>
+            <h3 id="status"></h3>
+            <p id="loaded_n_total"></p>
+            </form>	
+        </div>	
+
+					 <div class="form-group">
+					  <button id="add_" class="btn btn-primary shadow-primary btn-square px-5"><i class="icon-lock"></i> Ajouter</button>
+					</div>
+					 <div class="form-group">
+					  <button id="edit_" class="btn btn-primary shadow-primary btn-square px-5"><i class="icon-lock"></i> Modifier</button>
+					</div>
+				 </div>
+			   </div>
+				
+						</div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal"><i class="fa fa-times"></i> Fermer</button>
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div><!--End Modal -->		
+
+
+
+ <!-- resource modal: confirmations -->
+            <div class="modal fade" id="confirm_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"> <span class="title2"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Voulez-vous vraiment <span class="confirm_action"></span> ?
+                        </div>
+						<form id="sup_element">
+						<input type="hidden" id="gid_sup" name="gid">
+						</form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-close" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
+                            <button type="button" id="delete_" class="btn btn-danger"><i class="fa fa-check-square-o"></i> Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+	
+
+<div class="modal fade" id="zone_inter_modal">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><i class="fa fa-star"></i><span class="title3"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        
+			  
+			    <div class="row">
+				
+        <div class="col-lg-3 col-md-3">   <select id="regions" name="regions" onchange="enregistrer_zone_projet('regions',this.value)"> </select> </div> 
+				<div class="col-lg-4 col-md-4">   <select id="departements" name="departements" onchange="enregistrer_zone_projet('departements',this.value)"> </select> </div> 
+				<div class="col-lg-5 col-md-5">   <select id="communes" name="communes" onchange="enregistrer_zone_projet('communes',this.value)"> </select> </div> 
+				   
+                  </div>
+					<hr>
+        
+      <div class="row">
+				
+        <div class="col-lg-6 col-md-6"> 
+
+
+           <div class="row">
+
+          
+          <div class="col-lg-4 col-md-4">
+          <table class="table table-bordered responsive nowrap" width="100%"> 
+          <tr>
+            <th> Région </th>
+          </tr>
+
+          <tbody id="elem_regions">
+        
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+
+        <div class="col-lg-4 col-md-4">
+            <table class="table table-bordered responsive nowrap" width="100%">  
+            <tr>
+              <th> Départe </th>
+            </tr>
+  
+            <tbody id="elem_departements">
+        
+            </tbody>
+  
+            </table>
+  
+          </div>
+
+
+          <div class="col-lg-4 col-md-4">
+              <table class="table table-bordered responsive nowrap" width="100%">  
+              <tr>
+                <th> Commune </th>
+              </tr>
+    
+              <tbody id="elem_communes">
+        
+                </tbody>
+    
+              </table>
+    
+            </div>
+
+
+
+        </div> 
+
+        </div>  
+
+
+         <div class="col-lg-6 col-md-6"> <div id="map" style="display:block">  </div> </div>
+                
+      </div>
+					
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        <button type="button" class="btn btn-primary"><i class="fa fa-check-square-o"></i> Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>	
+
+				
+<!-- Fin des Modals -->
+
+
+
+<script>
+
+  </script> 
+
+<script src="seminaire_formation/index.js"></script>
+
