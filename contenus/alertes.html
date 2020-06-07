@@ -1,0 +1,610 @@
+<style>
+       
+      #map_infos_pratiques {
+            height: 400px;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        etat_true{color:green}
+		etat_false{color:red}
+		
+		.button_presentation{
+		padding:10px
+		}
+    </style>
+<div class="presentation">
+
+<div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li title="Feux de brousse" style="font-size:15px" class="button_presentation"><a href="#fire" role="tab"><i class="fa fa-fire"></i></a></li><hr>
+				<li title="Maladies animales" style="font-size:15px" class="button_presentation"><a href="#maladie" role="tab"><img src="images/icons8-race-de-vache-64.png" width='50%'></a></li><hr>
+				<li title="Vol de bétail" style="font-size:15px" class="button_presentation"><a href="#vol_betail" role="tab"><img src="images/icons8-race-de-vache-40.png"></a></li> <hr>
+				
+				<li title="Forage en pannes" style="font-size:15px" class="button_presentation"><a href="#forage_panne" role="tab"><img src="images/icons8-tour-de-forage-40.png"></a></li><hr>
+                
+            </ul>
+
+           
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="fire">
+                <h1 class="sidebar-header">
+                   Feux de brousse Définir la période
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <p>
+				
+
+
+<form action='' name='testforms_du' method='GET'>
+<p>
+<b style='color:blue'>Du</b>
+
+<input type='date'  onchange='typeChange()'>
+</p>
+
+<p>
+<b style='color:blue'>Au</b> <input type='date' onchange='submitForm_du()'>
+</p>
+</form>
+
+<h1 class="sidebar-header">
+                    Localisation
+<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+</h1>
+<form action='' name='testforms_du' method='GET'>
+<p>
+Choisir département
+</p>
+
+<select placeholder="selectionner"  id="departements" class="multipleSelect" multiple name="language">   
+							</select>
+
+
+
+</form>
+
+
+
+				</p>
+
+             
+            </div>
+
+            <div class="sidebar-pane" id="maladie">
+                <h1 class="sidebar-header">Maladies animales<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+
+<form id="maldies_animales_form">				
+<p>
+<i class="fa fa-clock"></i> Date début <input type='date'  name="date_debut_maladies" id="date_debut_maladies">
+</p>
+
+<p>
+<i class="fa fa-clock"></i> Date fin <input type='date' name="date_fin_maladies" id="date_fin_maladies">
+</p>
+</form>
+
+<p>
+<button onclick='maladies()'> Afficher </button>
+</p>
+
+<p>
+<span id="nombre_maladies"></span>
+</p>
+
+
+
+				
+            </div>
+
+            <div class="sidebar-pane" id="vol_betail">
+                <h1 class="sidebar-header">Vol de bétail<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+				
+				
+				
+				<form id="vols_betails_form">				
+<p>
+<i class="fa fa-clock"></i> Date début <input type='date'  name="date_debut_vols" id="date_debut_vols">
+</p>
+
+<p>
+<i class="fa fa-clock"></i> Date fin <input type='date' name="date_fin_vols" id="date_fin_vols">
+</p>
+</form>
+
+<p>
+<button onclick='vols()'> Afficher </button>
+</p>
+
+<p>
+<span id="nombre_vols"></span>
+</p>
+				
+            </div>
+
+            <div class="sidebar-pane" id="forage_panne">
+                <h1 class="sidebar-header">Forage en panne<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+				
+				
+					<form id="forages_form" style="font-size:10px;padding-top:20px">				
+<p>
+<input type="radio" name="button_forage" onclick="forages(1)">  Tous les forages 
+</p>
+
+<p>
+<input type="radio" name="button_forage" onclick="forages(2)">  Forages fonctionnel
+</p>
+
+<p>
+<input type="radio" name="button_forage" onclick="forages(3)"> Forages non fonctionnel 
+</p>
+
+</form>
+
+<p>
+<button onclick='forages()'> Afficher </button>
+</p>
+
+<p>
+<span id="nombre_forages"></span>
+</p>	
+				
+				
+            </div>
+        </div>
+		
+		
+		  <!-- Tab panes -->
+        
+		
+		
+		
+		
+		
+    </div>
+
+<div id="map_infos_pratiques" class="sidebar-map"></div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+        var map = L.map('map_infos_pratiques');
+        map.setView([14, -14], 7);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'ALERTES'
+        }).addTo(map);
+
+        var marker = L.marker([51.2, 7]).addTo(map);
+
+        var sidebar = L.control.sidebar('sidebar').addTo(map);
+		
+	var feux = L.featureGroup();	
+	var maladies_c = L.featureGroup();
+	var vols_c = L.featureGroup();
+	var forage_panne = L.featureGroup();
+	
+	var url_serveur="http://213.154.74.35:8080";
+
+			 var fond = L.tileLayer.wms(url_serveur+"/geoserver/wms", {
+                        layers:  'praps:regions',
+					    <!-- cql_filter:"denomination='Région'", -->
+                        format: 'image/png',
+                        transparent: true,
+						visible: true,
+						isBaseLayer: false
+                    });
+
+ map.addLayer(fond);
+ 
+ var baseMaps = [
+			                {
+								groupName : "Fond de carte",
+								expanded : true,
+								layers    : {
+
+									"OpenStreetMaps" : fond
+								}
+					        }
+			];
+
+			var overlays = [
+
+
+							 {
+								groupName : "Alés",
+								expanded : true,
+								layers    : {
+									"Feux de brousse"     :  feux,
+									"Maladies animales"     :  maladies_c,
+									"Vol de bétail"     :  vols_c,
+									"Forage en panne"     :  forage_panne
+
+								}
+                             }
+
+
+
+
+			];
+
+			var options = {
+				container_width 	: "300px",
+				group_maxHeight     : "80px",
+				//container_maxHeight : "350px",
+				exclusive       	: false,
+				collapsed : true,
+				position: 'topright'
+			};
+
+		    var control = L.Control.styledLayerControl(baseMaps, overlays,options);
+			map.addControl(control);
+
+control.selectLayer(feux);
+control.selectLayer(maladies_c);
+control.selectLayer(vols_c);
+control.selectLayer(forage_panne);
+
+		
+    </script>
+	
+	
+<script>
+var code_couleur=["#8A2BE2","#A52A2A","#DEB887","#5F9EA0","#7FFF00","#D2691E","#FF7F50","#6495ED","#800000","#DC143C","#00FFFF","#00008B","#008B8B","#B8860B","#A9A9A9","#DEB887","#8B008B","#556B2F","#FF8C00","#9932CC","#8B0000","#E9967A","#8FBC8F","#483D8B","#2F4F4F","#00CED1","#9400D3","#FF1493","#00BFFF","#696969","#1E90FF","#B22222","#228B22","#FF00FF","#DCDCDC","#FFD700","#DAA520","#808080","#008000","#ADFF2F","#FF69B4","#CD5C5C","#4B0082","#F0E68C","#E6E6FA","#000000","#7CFC00","#FFFACD","#ADD8E6","#F08080","#E0FFFF","#FAFAD2","#90EE90","#D3D3D3","#FFB6C1","#FFA07A","#20B2AA","#87CEFA","#778899","#B0C4DE","#00FF00","#32CD32","#FAF0E6","#FF00FF","#800000","#66CDAA","#0000CD","#BA55D3","#9370DB","#3CB371","#7B68EE","#00FA9A","#48D1CC","#C71585","#191970","#F5FFFA","#FFE4E1","#FFE4B5","#FFDEAD","#000080","#FDF5E6","#808000","#6B8E23","#FFA500","#FF4500","#DA70D6","#EEE8AA","#98FB98","#AFEEEE","#DB7093","#FFEFD5","#FFDAB9","#CD853F","#FFC0CB","#DDA0DD","#B0E0E6","#800080","#FF0000","#BC8F8F","#4169E1","#8B4513","#FA8072","#F4A460","#2E8B57","#FFF5EE","#A0522D","#C0C0C0","#87CEEB","#6A5ACD","#708090","#00FF7F","#4682B4","#D2B48C","#008080","#D8BFD8","#FF6347","#40E0D0","#EE82EE","#F5DEB3","#F5F5F5","#FFFF00","#9ACD32"]; 
+
+function Style_par_defaut_p(feature) {
+return {color: code_couleur[1],fillColor:code_couleur[2],weight:3,fillOpacity: 0.6,opacity: 0.9,radius:8};
+          
+    }
+	
+	var dictionnaire2={"maladie":"Nom de la maladie","data_apparition":"Date d'apparition","veterinaire":"Vétérinaire","action":"Action","nom_forage":"Designation","nom_forage":"Designation"};
+            // Define what happens to each polygon just before it is loaded on to
+    // the map. This is Leaflet's special way of goofing around with your
+    // data, setting styles and regulating user interactions.
+    var onEachFeature_p = function (feature, layer) {
+        var out = [];
+        var out2 = [];
+       
+        if (feature.properties) {
+            for (key in feature.properties) {
+
+                if (key != 'gid') {
+				if( dictionnaire2[key])
+				{
+                    out.push("" + dictionnaire2[key] + ": " + feature.properties[key] + "");
+                    out2.push(dictionnaire2[key] + ": " + feature.properties[key]);
+					}
+                }
+
+
+                if(key==="type_entite")
+                $("#elem_"+feature.properties[key]).append('<tr><td> <i onclick="delete_zone('+feature.properties["gid"]+')" style="color:red;cursor:pointer" class="fa fa-trash"></i> '+feature.properties["nom"]+' </td></tr>');
+
+            }
+		
+            layer.bindPopup(out.join("<br />"));
+            layer.bindTooltip(out2.join("<br />"));
+        }
+        // Load the default style.
+       layer.setStyle(Style_par_defaut_p(feature.properties));
+        // Create a self-invoking function that passes in the layer
+        // and the properties associated with this particular record.
+        (function (layer, properties) {
+            
+            // Create a mouseover event
+            layer.on("mouseover", function (e) {
+                // Change the style to the highlighted version
+                layer.setStyle(highlightStyle);
+                // Create a popup with a unique ID linked to this record
+
+                // Insert a headline into that popup
+            });
+            // Create a mouseout event that undoes the mouseover changes
+            layer.on("mouseout", function (e) {
+                // Start by reverting the style back
+             layer.setStyle(Style_par_defaut_p(feature.properties));
+                // And then destroying the popup
+
+            });
+            // Close the "anonymous" wrapper function, and call it while passing
+            // in the variables necessary to make the events work the way we want.
+        })(layer, feature.properties);
+    };
+	
+	
+function maladies()
+{
+
+var date_debut=$("#date_debut_maladies").val();
+var date_fin=$("#date_fin_maladies").val();
+
+
+if (date_debut.length == 0) {
+          alert("Vous devez donner renseigner la date début");
+		  document.getElementById('date_debut_maladies').style.border = '2px solid red';
+          return false;
+          }	 
+		  
+		  if (date_fin.length == 0) {
+          alert("Vous devez renseigner la date de fin");
+		  document.getElementById('date_debut_maladies').style.border = '1px solid gray';
+          document.getElementById('date_fin_maladies').style.border = '2px solid red';
+          return false;
+          }	
+		  
+		   document.getElementById('date_fin_maladies').style.border = '1px solid gray';
+   
+    $("#chargement_zone").html('<img src="img/loader.gif">');
+	  var s = $('#maldies_animales_form').serializeFormJSON();
+	
+	console.log(s);
+	
+	
+	 $.ajax({
+                    url:'api/aleas/maladies.php',
+                    type: 'POST',
+                    "content-type": "application/json",
+                    "cache-control": "no-cache",
+                    data: s,
+                    success: function (result) {
+                            
+					 var geojsonLayer=new L.geoJSON(result, {
+						onEachFeature: onEachFeature_p,
+        pointToLayer: function (feature, coordinates) {
+            return L.shapeMarker(coordinates, {
+                radius: 8,
+				shape: "triangle"
+            })
+        }
+             });
+			 
+			   maladies_c.clearLayers();
+                geojsonLayer.addTo(maladies_c);
+              //  map.fitBounds(geojsonLayer.getBounds());
+			 $("#nombre_maladies").html("Nombre de cas détécté :"+geojsonLayer.getLayers().length);
+			 
+			  geojsonLayer.on('data:loaded', function() {
+					$("#nombre_maladies").html("Nombre de cas détécté :"+geojsonLayer.getLayers().length);
+					$("#chargement_zone").html('');
+					}.bind(this));
+                    },
+                    error: function (result) {
+                    console.log(result);
+                            notification('error', result.responseJSON.message, 'fa fa-times-circle');
+                            $("#loader_").html("");
+                    }
+            });
+      
+       
+             
+            
+        
+        
+            
+                   
+}
+
+
+
+
+
+function vols()
+{
+
+var date_debut=$("#date_debut_vols").val();
+var date_fin=$("#date_fin_vols").val();
+
+
+if (date_debut.length == 0) {
+          alert("Vous devez donner renseigner la date début");
+		  document.getElementById('date_debut_vols').style.border = '2px solid red';
+          return false;
+          }	 
+		  
+		  if (date_fin.length == 0) {
+          alert("Vous devez renseigner la date de fin");
+		  document.getElementById('date_debut_vols').style.border = '1px solid gray';
+          document.getElementById('date_fin_vols').style.border = '2px solid red';
+          return false;
+          }	
+		  
+		   document.getElementById('date_fin_vols').style.border = '1px solid gray';
+   
+    $("#chargement_zone").html('<img src="img/loader.gif">');
+	  var s = $('#vols_betails_form').serializeFormJSON();
+	
+	console.log(s);
+	
+	
+	 $.ajax({
+                    url:'api/aleas/vols.php',
+                    type: 'POST',
+                    "content-type": "application/json",
+                    "cache-control": "no-cache",
+                    data: s,
+                    success: function (result) {
+                            
+					 var geojsonLayer=new L.geoJSON(result, {
+						onEachFeature: onEachFeature_p,
+        pointToLayer: function (feature, coordinates) {
+            return L.shapeMarker(coordinates, {
+                radius: 8,
+				shape: "circle"
+            })
+        }
+             });
+			 
+			   vols_c.clearLayers();
+                geojsonLayer.addTo(vols_c);
+              //  map.fitBounds(geojsonLayer.getBounds());
+			 $("#nombre_vols").html("Nombre de cas de vol :"+geojsonLayer.getLayers().length);
+			 
+			  geojsonLayer.on('data:loaded', function() {
+					$("#nombre_vols").html("Nombre de cas de vol :"+geojsonLayer.getLayers().length);
+					$("#chargement_zone").html('');
+					}.bind(this));
+                    },
+                    error: function (result) {
+                    console.log(result);
+                            notification('error', result.responseJSON.message, 'fa fa-times-circle');
+                            $("#loader_").html("");
+                    }
+            });
+      
+       
+             
+            
+        
+        
+            
+                   
+}
+
+
+
+
+function forages(etat)
+{
+
+    $("#chargement_zone").html('<img src="img/loader.gif">');
+	  var s = $('#forages_form').serializeFormJSON();
+	
+	console.log(s);
+	
+	s.etat=etat;
+
+	
+	 $.ajax({
+                    url:'api/aleas/forages.php',
+                    type: 'POST',
+                    "content-type": "application/json",
+                    "cache-control": "no-cache",
+                    data: s,
+                    success: function (result) {
+                            
+					 var geojsonLayer=new L.geoJSON(result, {
+						onEachFeature: onEachFeature_p,
+        pointToLayer: function (feature, coordinates) {
+		var mis=feature.properties.etat;
+		if(mis===true) var color="green"; else var color="red";
+            return L.marker(coordinates, {
+  icon: L.divIcon({
+    className: 'map-marker A',
+     iconSize:null,
+     html:'<div class="icon" style="background:'+color+'"><i class="fa fa-home" style="color:'+color+'" aria-hidden="false"></i></div><div class="arrow" />'
+  })
+})
+        }
+             });
+			 
+			   vols_c.clearLayers();
+                geojsonLayer.addTo(vols_c);
+              map.fitBounds(geojsonLayer.getBounds());
+			 $("#nombre_forages").html("Nombre de forage :"+geojsonLayer.getLayers().length);
+			 
+			  geojsonLayer.on('data:loaded', function() {
+					$("#nombre_forages").html("Nombre de forage en marche :"+geojsonLayer.getLayers().length);
+					$("#chargement_zone").html('');
+					}.bind(this));
+                    },
+                    error: function (result) {
+                    console.log(result);
+                            notification('error', result.responseJSON.message, 'fa fa-times-circle');
+                            $("#loader_").html("");
+                    }
+            });
+      
+       
+             
+            
+        
+        
+            
+                   
+}
+
+
+
+</script>
+
+
+
+	
+	
+	
+	
+	<script>
+        var get_entites = function (entite,id_parent) {
+        var liste_ent="<option value='*'>"+entite+"</option>";
+        var parent;
+      if(entite==="departements") entite_parent="regions"
+      else entite_parent="departements";
+      
+      id_parent=$("#entite_"+entite_parent).val();
+        var obj={
+          uniteAdmin:entite,
+          parent:id_parent
+              }
+              obj=JSON.stringify(obj);
+            $.ajax({
+              url: 'api/get_entites.php?entite='+entite,
+              type: 'GET',
+              'async': false,
+              'global': false,
+              contentType : 'application/json; charset=UTF-8',
+              data: obj,
+                'success': function (result) {
+      
+                for(var k=0;k<result.length;k++)
+                {
+              if(parent===result[k].nom_parent && entite!="regions") {
+                liste_ent +="<option value='"+result[k].gid+"'>"+result[k].nom+"</option>";
+              }
+      else if (entite==="regions") {
+        liste_ent +="<option value='"+result[k].gid+"'>"+result[k].nom+"</option>";
+      }
+              else {
+                liste_ent +=" <optgroup label='"+result[k].nom_parent+"'><option value='"+result[k].gid+"'>"+result[k].nom+"</option>";
+              }
+      
+              parent=result[k].nom_parent;
+                }
+      
+                }
+            });
+      
+            return liste_ent;
+        }
+
+    var mesUnites=get_entites("departements","departements");
+    $('#departements').empty();
+    $('#departements').append(mesUnites);
+
+$('.multipleSelect').fastselect();
+    </script>
+	
+	
+	

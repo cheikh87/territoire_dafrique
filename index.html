@@ -3,24 +3,23 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Scaffold responsive website template</title>
+  <title>Territoire d'afrique</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <link href="assets/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
   <!-- styles -->
-  <link href="assets/css/bootstrap.css" rel="stylesheet">
-  <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="assets/css/bootstrap2.css" rel="stylesheet">
   <link href="assets/css/docs.css" rel="stylesheet">
-  <link href="assets/css/prettyPhoto.css" rel="stylesheet">
   <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
-  <link href="assets/css/camera.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300|Open+Sans:400,300,300italic,400italic" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/color/success.css" rel="stylesheet">
 
   <!-- fav and touch icons -->
-  <link rel="shortcut icon" href="assets/ico/favicon.ico">
+  <link rel="shortcut icon" href="assets/img/logo_territoire.png">
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
@@ -34,92 +33,39 @@
   ======================================================= -->
 </head>
 
-<body>
+<style>
+body{
+background:#DCDCDC;
+}
+ul.nav-list li
+{
+padding:5px;border-bottom:1px solid #DCDCDC
+
+}
+</style>
+
+<body data-spy="scroll" data-target=".bs-docs-sidebar">
 
   <header>
     <!-- Navbar
     ================================================== -->
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
+      <div class="navbar-inner" style="background:#DCDCDC">
+        <div class="container" style="background:white">
           <!-- logo -->
           <a class="brand logo" href="index.html">
-            <img src="assets/img/logo.png" alt="" />
-          </a>
+						<img src="assets/img/logo_territoire.png" alt="" />
+				  </a>
           <!-- end logo -->
 
           <!-- top menu -->
           <div>
             <nav>
               <ul class="nav topnav">
-                <li class="dropdown success active">
-                  <a href="index.html"><i class="icon-home icon-white"></i> Home</a>
-                  <ul class="dropdown-menu">
-                    <li><a href="index_alt1.html">Index alt 1</a></li>
-                    <li><a href="index_alt2.html">Index alt 2</a></li>
-                  </ul>
+                <li style="float:left">
+                  <a href="index.html"> REVUE TERRITOIRE D'AFRIQUE</a>
                 </li>
-                <li class="dropdown primary">
-                  <a href="#"><i class="icon-star icon-white"></i> Features</a>
-                  <ul class="dropdown-menu">
-                    <li><a href="overview.html">Overview</a></li>
-                    <li><a href="scaffolding.html">Scaffolding</a></li>
-                    <li><a href="base-css.html">Base CSS</a></li>
-                    <li><a href="components.html">Components</a></li>
-                    <li><a href="javascript.html">Javascripts</a></li>
-                    <li class="dropdown"><a href="#">3rd level</a>
-                      <ul class="dropdown-menu sub-menu">
-                        <li><a href="#">Example menu</a></li>
-                        <li><a href="#">Example menu</a></li>
-                        <li><a href="#">Example menu</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li class="dropdown danger">
-                  <a href="#"><i class="icon-leaf icon-white"></i> Pages</a>
-                  <ul class="dropdown-menu">
-                    <li><a href="about.html">About us</a></li>
-                    <li><a href="services.html">Our services</a></li>
-                    <li><a href="pricingtable.html">Pricing table</a></li>
-                    <li><a href="faq.html">F.A.Q</a></li>
-                    <li><a href="fullwidth.html">Fullwidth</a></li>
-                    <li><a href="404.html">404</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown warning">
-                  <a href="#"><i class="icon-camera icon-white"></i> Portfolio</a>
-                  <ul class="dropdown-menu">
-                    <li class="dropdown"><a href="#">Portfolio type 1</a>
-                      <ul class="dropdown-menu sub-menu">
-                        <li><a href="portfolio-alt1-2cols.html">2 columns</a></li>
-                        <li><a href="portfolio-alt1-3cols.html">3 columns</a></li>
-                        <li><a href="portfolio-alt1-4cols.html">4 columns</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown"><a href="#">Portfolio type 2</a>
-                      <ul class="dropdown-menu sub-menu">
-                        <li><a href="portfolio-alt2-2cols.html">2 columns</a></li>
-                        <li><a href="portfolio-alt2-3cols.html">3 columns</a></li>
-                        <li><a href="portfolio-alt2-4cols.html">4 columns</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="portfolio-alt3.html">Portfolio type 3</a></li>
-                    <li><a href="portfolio-detail.html">Portfolio detail</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown info">
-                  <a href="#"><i class="icon-bullhorn icon-white"></i> Blog</a>
-                  <ul class="dropdown-menu">
-                    <li><a href="blog_left_sidebar.html">Blog left sidebar</a></li>
-                    <li><a href="blog_right_sidebar.html">Blog right sidebar</a></li>
-                    <li><a href="post_left_sidebar.html">Post left sidebar</a></li>
-                    <li><a href="post_right_sidebar.html">Post right sidebar</a></li>
-                  </ul>
-                </li>
-                <li class="inverse">
-                  <a href="contact.html"><i class="icon-envelope icon-white"></i> Contact</a>
-                </li>
+                
               </ul>
             </nav>
           </div>
@@ -129,330 +75,180 @@
     </div>
   </header>
 
-  <section id="intro">
-    <div class="jumbotron masthead">
 
-      <div class="container">
-        <div class="row">
-          <div class="span12">
-            <div class="camera_wrap camera_black_skin" id="camera_wrap_2">
-              <div data-thumb="assets/img/slides/camera/img1.jpg" data-src="assets/img/slides/camera/img1.jpg">
-                <div class="camera_caption fadeFromBottom">
-                  <h2>Twitter bootstrap</h2>
-                  <div class="hidden-phone">
-                    <p>
-                      Mei ad recteque rationibus, ex quaeque civibus eloquentiam vim. Solet cetero id nam. Ne eos nonumy voluptua, vis nobis euismod qualisque te, no nam debet oporteat.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div data-thumb="assets/img/slides/camera/img2.jpg" data-src="assets/img/slides/camera/img2.jpg">
-                <div class="camera_caption fadeFromBottom">
-                  <h2>Responsive layout</h2>
-                  <div class="hidden-phone">
-                    <p>
-                      Nam omnium salutandi ad, accusam indoctum ne mel, posse expetendis mea at. Luptatum antiopam pro ne. Eum at autem antiopam sadipscing, an his omnis splendide perfecto.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div data-thumb="assets/img/slides/camera/img3.jpg" data-src="assets/img/slides/camera/img3.jpg">
-                <div class="camera_caption fadeFromBottom">
-                  <h2>Metro style</h2>
-                  <div class="hidden-phone">
-                    <p>
-                      Lorem ipsum dolor sit amet, dicam singulis in ius, eu timeam aperiam pri. His suas solum legimus eu, sea an duis habemus urbanitas. No sapientem consetetur sit an.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div data-thumb="assets/img/slides/camera/img4.jpg" data-src="assets/img/slides/camera/img4.jpg">
-                <div class="camera_caption fadeFromBottom">
-                  <h2>Lot of features</h2>
-                  <div class="hidden-phone">
-                    <p>
-                      Sit et laudem aperiri argumentum. Vim laboramus instructior eu, minim aliquid accusata ut est, sea ut ridens causae quaerendum. Ea vide posidonium usu qui ad pertinax.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- #camera_wrap_1 -->
-
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Subhead
+================================================== -->
+  <section id="subintro">
+    
   </section>
 
 
-  <div class="container">
+  <div class="container" style="background:white">
+
+    <!-- Docs nav
+    ================================================== -->
     <div class="row">
-      <div class="span12">
-        <div class="tagline">
-          <div class="row">
-            <div class="span6">
-              <div class="tagline_text">
-                <h2>Scaffold will <span class="text-success">pimp up</span> your website quickly</h2>
-                <div class="tag_list">
-                  <ul>
-                    <li><span><i class="icon-fire"></i> Hottest price on the net</span></li>
-                    <li><span><i class="icon-gift"></i> More than expected</span></li>
-                    <li><span><i class="icon-plane"></i> Flying out of the crowd</span></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list">
+          <li class="active"><a href=""><i class="icon-chevron-right"></i> Présentation</a></li>
+          <li id="seminaire_formation"><a href="#sem_formation" class="active" onclick="charger_contenu('seminaire_formation.html','seminaire_formation')"><i class="icon-chevron-right"></i> Séminaire et formation</a></li>
+		   <li  id="publications_revus"><a href="#" onclick="charger_contenu('revus.html','alertes')"><i class="icon-chevron-right"></i> Publications</a></li>         
+          <li><a href="#contact"><i class="icon-chevron-right"></i> Contact</a></li>
+          
+		  <div style="text-align:center">
+		   <h5></h5>
+		    <h5>Partenaires</h5>
+		    <img src="assets/img/Logo GRED.jpg" width="60%">
+			 <img src="assets/img/gerad_logo.png" width="60%">
+			 
+			  <img src="assets/img/Logo UEMOA.png" width="60%">
+			  
+			    <img src="assets/img/ucad.png" width="60%">
+			  
+			  </div>
+		   
+        </ul>
+		
+		   
+     
+      </div>
+      <div class="span7" id="all_cont">
 
-            <div class="span6">
-              <div class="btn-toolbar cta">
-                <a class="btn btn-large btn-danger" href="#"><i class="m-icon-big-swapright m-icon-white"></i> Our pricing</a>
-                <a class="btn btn-large btn-success" href="#"><i class="m-icon-big-swapdown m-icon-white"></i> Download now</a>
-              </div>
-            </div>
 
 
+        <!-- Download
+        ================================================== -->
+        <section id="prensetation_general" class="doc">
+          <div class="page-header first">
+            <h3>1. PRESENTATION</h3>
           </div>
+          <p style="text-align:justify"> <p style="text-align:justify">La littérature scientifique jusqu’ici n’a accordé qu’une place très limitée au développement territorial en Afrique. Pour le besoin des décideurs africains, des organismes de coopération, des instituts et centres de recherche, et des chercheurs comme des acteurs locaux il faut disposer d’une information crédible, documentée, prospective et traitée de manière objective par des spécialistes.</p>
+
+<p style="text-align:justify">C’est pour palier à ce manque qu’il a été décidé de mettre en place une revue semestrielle. La revue dénommée « TERRITOIRES D’AFRIQUE » porte un regard différent dont l’issue pourrait être décisive et porter une inflexion des politiques de développement au niveau des Etats de l’Afrique.</p>
+
+<p style="text-align:justify">Cette revue propose d’identifier les enjeux du développement territorial, de mesurer l’implication de l’ensemble des acteurs, de mesurer les effets sur l’organisation de l’espace dans les politiques de développement qui doivent prendre les réalités de la mondialisation (articulation entre le global et le local : comme étant des dynamiques fondatrices d’un monde en changement). Faire émerger l’information sur le développement régional est d’autant plus nécessaire en Afrique que cela permettrait une reformulation régulière des théories, des politiques et stratégies de développement.</p>
+
+<p style="text-align:justify">Au-delà de la diffusion d’informations sur les politiques de développement territorial, il s’agit d’initier un dialogue entre les différents acteurs de la décentralisation en Afrique de l’ouest : Gouvernements, Organisations africaines de la Société civile, chercheurs et partenaires au développement.</p>
+
+<p style="text-align:justify">La visibilité des activités sur les politiques de développement régional en Afrique est importante et stratégique. Elle pourrait donner un contenu tangible au débat, contribuer à mieux répartir les investissements selon les différentes zones de développement du Continent, à auto-évaluer réellement l’efficacité des investissements consentis par différentes Institutions et à permettre à tout moment de percevoir à travers un agenda une vision globale et</p> immédiate de l’évolution des politiques de la décentralisation en Afrique. 
+
+<p style="text-align:justify">L’impact réel des politiques de développement régional sur les populations doit nécessairement faire l’objet d’études approfondies et bien fouillées de la part de tous les acteurs impliqués dans ce processus.</p>
+
+<p style="text-align:justify">L’objectif principal est donc de vérifier si les résultats peuvent alimenter la ré-formulation des politiques et des programmes de développement. Si les décideurs accordent toute l’attention requise aux produits du développement territorial, et si tous les acquis des chercheurs, décideurs et acteurs locaux permettront l’émergence d’une synergie dynamique favorable au développement territorial.</p>
+
+<p style="text-align:justify">La question stratégique qui se pose aux différents Etats africains est la suivante : quelles seront donc les conditions suffisantes pour que les processus de développement territorial sur le continent bénéficient pleinement de l’ensemble des résultats de la recherche. Il s’agit enfin de contribuer à la diffusion des résultats sur les politiques de développement régional en fournissant des éléments de réflexion et de vulgarisation des résultats de la recherche tout en essayant de concilier la théorie et la pratique.</p>
+
+          </p>
+        </section>
+
+
+
+        <!-- File structure
+        ================================================== -->
+        <section >
+          <div class="page-header">
+            <h3>2. DIRECTEUR DE PUBLICATION </h3>
+          </div>
+          <p style="text-align:justify">Amadou DIOP, Professeur titulaire en géographie de l’aménagement, enseigne à l’Université Cheikh Anta Diop de Dakar. Il effectue des missions d’enseignement à l’Université Paul Valéry de Montpellier III où il est membre du laboratoire UMR GRED (Gouvernance, Risque, Environnement, Développement). Praticien du développement territorial, il est à ce titre coordonnateur du GERAD et membre du conseil d’administration de l’ONG SOS FAIM Belgique.</p>          
+        </section>
+
+
+
+        <!-- comite_editorial
+        ================================================== -->
+        <section id="comite_editorial" class="doc">
+          <div class="page-header">
+            <h3>COMITE EDITORIAL </h3>
+          </div>
+          <p style="text-align:justify">Groupe d’Etude de Recherche et d’Appui au Développement (GERAD) Dakar ; Gouvernance Risque Environnement Développement (GRED) Montpellier, Union Economique Monétaire Ouest Africaine (UEMOA), Freddy Destrait, Administrateur SOS FAIM Belgique, Pr. Amadou DIOP, Département de Géographie UCAD-DAKAR/GERAD, Pr. Jean Marie MIOSSEC, Université Paul Valéry Montpellier III, UMR-GRED, Pr Christel ALVERGNE, Fonds d’Equipement des Nations Unis Dakar, Dr. Gorgui CISS, Université Cheikh Anta DIOP de Dakar, Dr Fatou Maria DRAME, Université Gaston Berger de Saint Louis, Pr. Fabienne LELOUP, FUcaM, Académie Universitaire Louvain, Pr. John O. IGUE, Directeur scientifique du laboratoire d’Analyse Régionale et d’Expertise Sociale (LARES) à Cotonou au Bénin, Dr. Mame Arame SOUMARE, Université Cheikh Anta DIOP de Dakar, Pr. Raffaele CATTEDRA, Université Paul Valéry, Montpellier III, Dr. Aminata NDIAYE, Université Cheikh Anta Diop, Dakar, Pr. Emérite Etienne Van HECKE, Division of Geography KULeuven, België, Dr. Eric LEONARD, socio-économiste, UMR-GRED, Montpellier ; Bernard Moizo, Directeur de Recherche UMR-GRED, Montpellier, Jean-Pierre CHAUVEAU, Directeur de recherche émérite à l' UMR-GRED, Montpellier ; Dr. Stéphanie DEFOSSEZ, Géographe UMR-GRED Montpellier, Dr. Paul NDIAYE Université Cheikh Anta Diop Dakar, Dr. Pape SAKHO, Université Cheikh Anta DIOP de Dakar, Dr. Ndiacé DIOP, Université Cheikh Anta DIOP de Dakar, Edmond SOUGUE, Economiste-Aménagiste, Toulouse, Dr Christophe EVRARD, Université Paul Valéry Montpellier III, Denis PESCHE, CIRAD ARENA, Montpellier, Pr. Betty WAMPFLER. IRC / Supagro Montpellier, Dr. Tony REY, Université Paul Valéry Montpellier III, Ibrahima THIOYE, Administrateur Civil, Sénégal.</p>
+
+         
+        </section>
+
+
+
+        <!-- HTML template
+        ================================================== -->
+        <section id="administration" class="doc">
+          <div class="page-header">
+            <h3>ADMINISTRATION </h3>
+          </div>
+          <p>  <b>GERAD Sicap Sacré Coeur 3 villa 9231 BP 16473 Dakar-Fann </b> , <br>Tél (221) 33 869 37 93<br>
+Fax : (221) 33 827 94 99- <br>
+email : ceta@geradsn.org ou gerad@orange.sn<br>
+Site web : <a href="http://www.territoires-dafrique.org" target="_blank">www.territoires-dafrique.org </a>
+</p>
+           </section>
+
+
+
+
+        <!-- Next
+        ================================================== -->
+        <section id="conceptions" class="doc">
+          <div class="page-header">
+            <h3>CONCEPTION, INFOGRAPHIE ET MISE EN PAGE </h3>
+          </div>
+          <p>Bineta Dia TOURE, GERAD, Dakar
+Contact :  <a href="mailto:bineta@geradsn.org">bineta@geradsn.org</a>
+.</p>
+        </section>
+
+
+
+
+      </div>
+	  
+	     <div class="span2">
+		  <h5>Publications </h5>
+        <div class="" id="liste_revus">
+      
         </div>
       </div>
-
+	  
+	  
     </div>
+
   </div>
-
-  <!-- end tagline -->
-
-  <section id="maincontent">
-    <div class="container">
-
-      <div class="row">
-        <div class="span3">
-          <h3 class="heading-success"><span class="btn btn-large btn-success"><i class="m-icon-big-swapright m-icon-white"></i></span>&nbsp;&nbsp;Main features</h3>
-          <p>Aenean sodales augue ac lacus hendrerit sed rhoncus erat hendrerit. Praesent eleifend sodales felis, in congue purus scelerisque eget.</p>
-        </div>
-        <div class="span3">
-          <div class="well well-primary box">
-            <img src="assets/img/icons/box-1-white.png" alt="" />
-            <h3>Responsive bootstrap</h3>
-            <p>
-              Dolorem adipiscing definiebas ut nec. Dolore consectetuer eu vim, elit molestie ei has, petentium imperdiet in pri. Mel virtute efficiantur ne zril.
-            </p>
-            <a href="#">Read more</a>
-          </div>
-        </div>
-        <div class="span3">
-          <div class="well well-success box">
-            <img src="assets/img/icons/box-2-white.png" alt="" />
-            <h3>With metro taste</h3>
-            <p>
-              Ad sit option intellegat, unum populo comprehensam ut sed. Copiosae corrumpit qui ex, duo nullam feugait qualisque at an dicit saperet.
-            </p>
-            <a href="#">Read more</a>
-          </div>
-        </div>
-        <div class="span3">
-          <div class="well well-warning box">
-            <img src="assets/img/icons/box-3-white.png" alt="" />
-            <h3>Well documented</h3>
-            <p>
-              Ne vix clita integre expetenda, eos cetero numquam no, in sea omnes detracto. Ne iriure habemus maiestatis mei. Postea euripidis contentiones.
-            </p>
-            <a href="#">Read more</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section id="bottom">
-    <div class="container">
-
-      <!-- divider -->
-      <div class="row">
-        <div class="span12">
-          <div class="divider"></div>
-        </div>
-      </div>
-      <!-- end divider -->
-
-
-      <div class="row">
-        <div class="span12">
-          <h3><a class="btn btn-large btn-success" href="#"><i class="m-icon-big-swapdown m-icon-white"></i></a> Recent works</h3>
-
-          <div id="latest-work" class="carousel btleft">
-            <div class="carousel-wrapper">
-
-              <ul class="portfolio-home da-thumbs">
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work1.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work2.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work3.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work4.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work5.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work6.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work7.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="thumbnail">
-                    <div class="image-wrapp">
-                      <img src="assets/img/dummies/work8.jpg" alt="Portfolio name" title="" />
-                      <article class="da-animate da-slideFromRight" style="display: block;">
-                        <a class="link_post" href="portfolio-detail.html"><img src="assets/img/icons/link_post_icon.png" alt="" /></a>
-                        <span><a class="zoom" data-pretty="prettyPhoto" href="assets/img/dummies/big1.jpg"><img src="assets/img/icons/zoom_icon.png" alt="Portfolio name" title="Portfolio name" /></a></span>
-                      </article>
-                    </div>
-                    <div class="caption">
-                      <h5>Portfolio name</h5>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Footer
  ================================================== -->
   <footer class="footer">
     <div class="container">
       <div class="row">
-        <div class="span4">
+        <div class="span4" id="contact">
           <div class="widget">
-            <h4>About us</h4>
+            <h4>A propos du site</h4>
             <address>
-					<strong>Scaffold company, Inc.</strong><br>
-					445 Mypark Ave, Suite 800<br>
-					Jakarta, Indonesia 14210<br>
-					<abbr title="Phone">P:</abbr> (123) 456-7890
+					<strong>Territoire d'afrique</strong><br>
+					GERAD Sicap Sacré Coeur 3 villa 9231 BP 16473 Dakar-Fann<br>
+					<br>
+					<abbr title="Phone">Tel:</abbr> (221) 33 869 37 93
 					</address>
 
             <address>
-					<strong>Contact us</strong><br>
-					<a href="mailto:#">hello@websitename.com</a>
+					<strong>Contact</strong><br>
+					<a href="mailto:ceta@geradsn.org ">ceta@geradsn.org </a>
 					</address>
           </div>
         </div>
         <div class="span4">
           <div class="widget">
-            <h4>Browse pages</h4>
-            <ul class="nav nav-list regular">
-              <li class="nav-header">More from us</li>
-              <li><a href="#">Work for us</a></li>
-              <li><a href="#">Creative process</a></li>
-              <li><a href="#">Case study</a></li>
-              <li class="nav-header">Quick links</li>
-              <li><a href="#">Scaffold awwards</a></li>
-              <li><a href="#">Meet the team</a></li>
-            </ul>
+            
           </div>
         </div>
         <div class="span4">
           <div class="widget">
-            <h4>Get email updates</h4>
+            <h4> </h4>
             <form class="form-horizontal" action="#" method="post">
               <fieldset>
                 <p>
-                  Sign up for email updates and we'll plant a tree for you through Trees for the Future.
+                 
                 </p>
 
                 <div class="input-prepend input-append">
                   <input class="span2" id="appendedPrependedInput" type="text" placeholder="Email">
-                  <button class="btn btn-inverse" type="submit">Subscribe!</button>
+                  <button class="btn btn-inverse" type="submit">Envoyer!</button>
                 </div>
               </fieldset>
             </form>
@@ -472,7 +268,7 @@
       <div class="container">
         <div class="row">
           <div class="span6">
-            <p>&copy; Scaffold - All right reserved</p>
+            <p>&copy; Gerad - All right reserved</p>
           </div>
           <div class="span6">
             <div class="pull-right">
@@ -483,7 +279,7 @@
                   Licensing information: https://bootstrapmade.com/license/
                   Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Scaffold
                 -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                Designed by <a href="#">Gerad</a>
               </div>
             </div>
           </div>
@@ -499,16 +295,50 @@
   <script src="assets/js/modernizr.js"></script>
   <script src="assets/js/bootstrap.js"></script>
   <script src="assets/js/jquery.elastislide.js"></script>
-  <script src="assets/js/jquery.flexslider.js"></script>
   <script src="assets/js/jquery.prettyPhoto.js"></script>
   <script src="assets/js/application.js"></script>
-  <script src="assets/js/hover/jquery-hover-effect.js"></script>
-  <script src="assets/js/hover/setting.js"></script>
-  <script src="assets/js/camera/camera.min.js"></script>
-  <script src="assets/js/camera/setting.js"></script>
 
   <!-- Template Custom JavaScript File -->
   <script src="assets/js/custom.js"></script>
+   <script src="assets/js/index.js"></script>
+   <script src="assets/js/moment.min.js"></script>
+   
+   
+  <script  src='https://code.jquery.com/jquery-3.5.1.js'> </script>
+<script  src='assets/js/jquery.dataTables.min.js'> </script>
+<script  src='assets/js/dataTables.bootstrap4.min.js'> </script>
+ 
+ <script>
+ var get_revus = function () {
+    //var resultat=[];
+    //data={indicateur:indicateur,quartier:quartier};
+    $.ajax({
+        "url": 'api/get_revus.php',
+         type: 'GET',
+        'async': false,
+        'global': false,
+		"content-type": "application/json",
+        'success': function (result) {
+		console.log(result.data);
+		for(var i=0;i<result.data.length;i++)
+		{
+		 $("#liste_revus").append('<div><a href="#" onclick="afficher_doc(\''+result.data[i].revu+'\',\''+result.data[i].intitule+'\')"><i class="icon-chevron-right"></i> '+result.data[i].intitule+'</a></div>');
+		}
+          
+        }
+    });
+    
+}
+var test=get_revus();
+
+function afficher_doc(revu,titre)
+{
+$("#all_cont").html('');
+$("#all_cont").append('<div id="presentation_revu"></div><div id="affichage_revu"></div>');
+$("#presentation_revu").html(titre);	
+$("#affichage_revu").html('<iframe src="documents/donnees_suivi/'+revu+'" style="width:100%;height:500px"></iframe>');	
+}
+ </script>
 
 </body>
 

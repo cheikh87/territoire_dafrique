@@ -1,0 +1,206 @@
+<style>
+
+tr{border:1px solid #DCDCDC}
+
+	table#example.dataTable tbody tr:hover {
+            background-color: #ffa;
+			cursor:pointer
+}
+
+   
+  .selectionner_ {
+    background: yellow;
+  }
+  .highlight {
+    background: yellow;
+  }
+  
+  p {
+  border:1px solid white;
+  }
+ </style>
+<link rel="stylesheet" href="assets/css/vanilla-calendar-min.css">
+        <script src="assets/js/vanilla-calendar-min.js"></script> 
+ <div class="page">
+ 
+ 
+ <div id="sem_formation" class="doc"> </div> 
+   
+      <div id="revu_frame">     </div> 
+	  
+	  
+
+ <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="wow zoomIn" data-wow-duration="400ms" data-wow-delay="0ms">
+					<a target="_blank"  href="./carto">
+                           
+                        <ul class="pricing">
+                            <li class="plan-header">
+							     <div class="price-duration" style="background">
+                                    <span class="price" style="color:yellow">
+                                      <div id="information_formation" style="font-size:14px;padding:15px;border:1px solid white;background:white;color:black;text-align:justify;line-height:20px" id="description_revue">
+				  
+
+</div>
+                                    </span>
+                                    <span class="duration">
+                                         <!-- <img src='images/ico/demographie.jpg'> -->
+                                    </span>
+                                </div>
+								
+
+                                <div class="plan-name">
+                                <h5></h5>
+                                </div>
+                            </li>
+                          
+                                                  
+                        </ul>
+						 </a>
+                    </div>
+                </div>
+               
+            </div>		 
+        </div>
+		
+		
+	 <div class="area-buttons" style="display:none">
+                <button class="info" name="pastDates">Disable past dates</button>
+                <button class="info" name="availableDates" id="availableDates_cl">Set available dates</button>
+                <button class="info" name="availableWeekDays">Set available weekdays</button>
+            </div>
+		
+<script>
+$("li").removeClass("active");
+$("#seminaire_formation").addClass("active");
+var get_seminaire_formation = function (type_doc) {
+            var liste_ent;
+          
+          
+                $.ajax({
+                  url: 'api/get_seminaire_formation.php?type_doc='+type_doc,
+                  type: 'GET',
+                  'async': false,
+                  'global': false,
+                  contentType : 'application/json; charset=UTF-8',
+                 // data: obj,
+                    'success': function (result) {
+                      liste_ent=result;
+                   
+                    }
+                });
+          
+                return liste_ent;
+            }
+			
+
+
+
+
+function charger_frame(description,date_debut,date_fin,lieu,type_evenement){
+if(type_evenement) var legende_affiche=type_evenement; else legende_affiche="";
+$("#revu_frame").html('<div style="font-size:14px;padding:15px;border:1px solid white;background:white;color:black;text-align:justify;line-height:20px" id="description_revue"><legend>'+legende_affiche+'</legend>'+description+'</div>');	
+$("#information_formation").html("Du: "+date_debut+"<br> Au: "+date_fin+ "<br> à "+lieu);	
+
+console.log(description);
+
+}
+ 
+//charger_frame("<div class='row' style='text-align:justify;padding:5px'> <div class='col-md-6 col-sm-6 col-xs-6'><img src='images/c.jpg'></div><div class='col-md-6 col-sm-6 col-xs-6'><b>Aménagement du territoire et reconfigurations des espaces ouest-africains Vers de nouvelles dynamiques</b> <br>La littérature scientifique jusqu’ici n’a accordé qu’une place très limitée au développement territorial en Afrique. Pour le besoin des décideurs africains, des organismes de coopération, des instituts et centres de recherche, et des chercheurs comme des acteurs locaux il faut disposer d’une information crédible, documentée, prospective et traitée de manière objective par des spécialistes.C’est pour palier à ce manque qu’il a été décidé de mettre en place une revue semestrielle.</div></div>", "", "", "");
+	
+$("#sem_formation").html('<div id="myCalendar" class="vanilla-calendar" style="width:100%"></div>');
+$("#pricing").hide();
+
+
+
+$(document).ready(function() {
+
+			var all_date=get_seminaire_formation(1);
+			var all_date2=get_seminaire_formation(2);
+			var all_date3=get_seminaire_formation(3);
+            let pastDates = true, availableDates = false, availableWeekDays = false
+            
+            let calendar = new VanillaCalendar({
+                selector: "#myCalendar",
+                months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+                shortWeekday: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                onSelect: (data, elem) => {
+				var Intitule=data.data.descript;
+				var date_debut=data.data.date_debut;
+				var date_fin=data.data.date_fin;
+				var lieu=data.data.lieu;
+				var type_evenement=data.data.type_evenement;
+				charger_frame(Intitule,date_debut,date_fin,lieu,type_evenement);
+                 
+                }
+            })
+			
+			 
+			
+			 
+            let btnPastDates = document.querySelector('[name=pastDates]')
+            btnPastDates.addEventListener('click', () => {
+                pastDates = !pastDates
+                calendar.set({pastDates: pastDates})
+                btnPastDates.innerText = `${(pastDates ? 'Disable' : 'Enable')} past dates`
+            })
+            
+            let btnAvailableDates = document.querySelector('[name=availableDates]')
+            btnAvailableDates.addEventListener('click', () => {
+                availableDates = !availableDates
+                btnAvailableDates.innerText = `${(availableDates ? 'Clear available dates' : 'Set available dates')}`
+                if (!availableDates) {
+                    calendar.set({availableDates: [], datesFilter: false})
+                    return
+                }
+                let dates = () => {
+                    let result = []
+                    for (let i = 0; i <  all_date.length; ++i) {
+					
+					//alert(i);
+					 //for (var j = 0; j < all_date.length; j++)
+                     //   if (i % 2) continue
+					 
+                        //let date = new Date(new Date())
+						//alert(moment("2019-12-11", 'YYYY-MM-DD'));
+                       let date = new Date(moment(all_date[i].date_debut, 'YYYY-MM-DD'))
+                        result.push({descript:all_date[i].description,date_debut:all_date[i].date_debut,date_fin:all_date[i].date_fin,lieu:all_date[i].lieu,type_evenement:all_date[i].type_evenement,date: `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, 0)}-${String(date.getDate()).padStart(2, 0)}`})
+                    }
+                    return result
+                }
+                calendar.set({availableDates: dates(), availableWeekDays: [], datesFilter: true})
+				
+				
+				
+
+				
+				
+            })
+            $("#availableDates_cl").click();
+			
+            let btnAvailableWeekDays = document.querySelector('[name=availableWeekDays]')
+            btnAvailableWeekDays.addEventListener('click', () => {
+                availableWeekDays = !availableWeekDays
+                btnAvailableWeekDays.innerText = `${(availableWeekDays ? 'Clear available weekdays' : 'Set available weekdays')}`
+                if (!availableWeekDays) {
+                    calendar.set({availableWeekDays: [], datesFilter: false})
+                    return
+                }
+                let days = [{
+                    day: 'monday'
+                }, {
+                    day: 'tuesday'
+                }, {
+                    day: 'wednesday'
+                }, {
+                    day: 'friday'
+                }]
+                calendar.set({availableWeekDays: days, availableDates: [], datesFilter: true})
+            })
+			
+			
+			 });
+
+
+</script>

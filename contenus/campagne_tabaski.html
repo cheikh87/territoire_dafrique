@@ -1,0 +1,983 @@
+<style>
+       
+      #map_infos_pratiques {
+            height: 400px;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        
+    </style>
+	<style>
+ html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+#map {
+  float: left;
+  margin: 0;
+  width: 100%;
+  height: 300px;
+  border:4px solid RGB(169, 234, 254)
+}
+#info {
+  float: right;
+  margin: 0;
+  width: 50%;
+  height: 100%;
+}
+
+/*General marker style
+.map-marker {
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  background: #444;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  margin-top: -34px; /*Shift by arrow top+height*/
+  margin-left: -13px; /*Shift by half the marker width*/
+}
+
+*/
+
+.map-marker div.arrow {
+  position: relative;
+  border-style: solid;
+  border-color: #444 transparent transparent transparent;
+  border-width: 10px 6px 0 6px; /*Arrow w/h is defined by the borders*/
+  left: 5px; /*(Marker width - arrow width)/2*/
+  width: 0px; height: 0px;
+}
+
+/*General marker style
+.map-marker div.icon {
+  position: relative;
+  overflow: hidden;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-color: #ccc;
+  width: 20px; /*Same as marker width*/
+  height: 20px; /*Same as marker height*/
+  line-height: 24px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-left: 1px;
+  margin-top: 1px;
+}
+
+*/
+
+/*Marker content instances*/
+.map-marker.exclamation div.icon:before{
+  content: '!';
+}
+.map-marker.A div.icon:before{
+  content: '';
+}
+
+/*Marker color instances*/
+.map-marker.red div.icon{background: #ff2222;}
+
+.map-marker.green div.icon{background: #008800;color: #fff;}
+.map-marker.green {background: #000;}
+.map-marker.green div.arrow{border-top-color: #000;}
+
+/*Marker states*/
+.map-marker.inactive {
+  opacity: 0.6;
+}
+
+#mis_1{
+color:green;
+}
+#mis_1:hover{
+color:yellow;
+}
+
+
+#mis_2{
+color:yellow;
+}
+#mis_2:hover{
+color:red;
+}
+
+#mis_3{
+color:red;
+}
+#mis_2:hover{
+color:blue;
+}
+
+
+tr{border:1px solid #DCDCDC}
+
+	table#example.dataTable tbody tr:hover {
+            background-color: #ffa;
+			cursor:pointer
+}
+ </style>
+<div class="presentation">
+
+
+
+<div class='row'>	
+
+<div class="col-lg-8 col-md-8">
+
+<div id="map_infos_pratiques" class="sidebar-map"></div>
+
+<div class="col-lg-8 col-md-8"  style="border:1px solid red;margin-top:15px">
+ <h1 class="sidebar-header">
+                   Choisir date et type de recherche
+                    <span class="sidebar-close"><i class="fa fa-clock"></i></span>
+                </h1>
+
+                <p>	<div class="form-group">
+						 <div class="position-relative has-icon-left">
+						  <label for="date_fin">Veuillez selectionner la date de début</label>
+						  <input type="date" id="date_debut" name="date_debut" class="form-control" placeholder="Date de fin">
+						  <div class="form-control-position">
+							  <i class="icon-clock"></i>
+						  </div>
+					   </div>
+				</div>
+				</p>
+				
+				 <p>	<div class="form-group">
+						 <div class="position-relative has-icon-left">
+						  <label for="date_fin">Veuillez selectionner la date de fin</label>
+						  <input type="date" id="date_fin" name="date_fin" class="form-control" placeholder="Date de fin">
+						  <div class="form-control-position">
+							  <i class="icon-clock"></i>
+						  </div>
+					   </div>
+				</div>
+				</p>
+
+                <p class="lorem"><div class="form-group">
+						 <div class="position-relative has-icon-left">
+						  <label for="date_fin">Veuillez selectionner le type de recherche</label>
+						  <select id="type_select" name="type_select" class="form-control" placeholder="Date de fin" onchange="request_date(this.value)">
+						   <option value=""> Selectionner</option>
+						  <optgroup label='Nombre de tete)'> </optgroup>
+						    <option value="nombre_tet"> Nombre de têtes </option>
+							<optgroup label='Prix pratiqués (FCFA)'> </optgroup>
+						    <option value="min"> Mini</option>
+							<option value="max"> Max</option>
+							<option value="frequent"> Plus fréquent</option>
+						  </select>
+						  <button onclick="recharger(this.value)">Envoyer</button>
+						  <div class="form-control-position">
+							  <i class="icon-clock"></i>
+						  </div>
+					   </div>
+				</div></p>
+</div>
+
+</div>
+
+<div class="col-lg-4 col-md-4" >
+
+<h1 class="sidebar-header">Voir tendance d'un marché<span class="sidebar-close"><i class="fa fa-caret-left"></i></span> </span></h1>
+	<span id="list_all_market" style="float:right"> <button  onclick="active_div('liste_table_marche')"> <i class="fa fa-table"></i> Liste des marchés </button> </span><br>
+							
+				<select id="type_stats" onchange="change_affichage_type_stats(this.value)">
+				<option value="1">Nombre de tete</option>
+				<option value="2">Prix Min</option>
+				<option value="3">Prix Max</option>
+				<option value="4">Prix fréquent</option>
+				</select>
+				
+				<div id="container1" style="height:500px;"></div>
+				<div id="container2" style="height:500px;"></div>
+				<div id="container3" style="height:500px;"></div>
+				<div id="container4" style="height:500px;"></div>
+				
+				
+				
+				<fieldset id="liste_table_marche" style="background:#DCDCDC">
+				<legend style="font-size:11px;font-weight:bold">Liste des marchés</legend>
+				<table id="example" class="display">
+					<thead>
+							<tr>
+
+									<th>Nom</th>
+									<th>Région</th>
+
+							</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+			</table>
+			
+			</fieldset>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+for (var i=1;i<6;i++)
+$("#container"+i).hide();
+$("#type_stats").hide();
+$("#list_all_market").hide();
+var temp_legende;
+
+        var map = L.map('map_infos_pratiques');
+        map.setView([14, -14], 7);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+     
+
+      //  var sidebar = L.control.sidebar('sidebar').addTo(map);
+		
+    var FGgpx = L.featureGroup().addTo(map); // feature group ou on va inserer nos traces
+	
+	function recharger(){
+	var type_requete=$("#type_select").val();
+	request_date(type_requete)
+	}
+	
+	function request_date(type_requete,date_debut,date_fin)
+	{
+	 date_debut=$('#date_debut').val();
+	 date_fin=$('#date_fin').val();
+	if(date_debut.length===0)
+	{
+	alert("Vous devez selectionner une date de début");
+	return false;
+	}
+	
+	if(date_fin.length===0)
+	{
+	alert("Vous devez selectionner une date de fin");
+	return false;
+	}
+	
+	if(type_requete==='')
+	{
+	alert("Vous devez faire une selection");
+	return false;
+	}
+	
+	
+	afficher_donnees(type_requete,date_debut,date_fin);
+	active_div('liste_table_marche');
+	}
+	
+	
+	
+	function afficher_donnees(type_requete,date_debut,date_fin)
+	{
+	
+	$('html,body').animate({scrollTop: $(".banner").offset().top}, 'slow');
+	
+	var tab=[];
+var k=0;
+var container_couche=new L.GeoJSON.AJAX("api/get_couche.php?type_requete="+type_requete+"&date_debut="+date_debut+"&date_fin="+date_fin, {
+   pointToLayer: function (feature, coordinates) {
+   
+ var moyenne_taille=70-10;
+ 	   
+   if(type_requete==='*' || type_requete==="nombre_tet")
+    {
+            var formule=50000-100;
+	var nombre_tete2=feature.properties.nombre_tet;	
+    var  taille=Math.trunc(((moyenne_taille)/(formule))*(nombre_tete2-100)+10);	
+	}	
+	
+   if(type_requete==="min")
+   {
+   
+          var formule=500000-35000;  
+			
+	var nombre_tete2=feature.properties.min;	
+    var  taille=Math.trunc(((moyenne_taille)/(formule))*(nombre_tete2-35000)+10);	
+	}	
+	
+	if(type_requete==="max")
+   {
+   
+           var formule=600000-35000;
+	var nombre_tete2=feature.properties.max;	
+    var  taille=Math.trunc(((moyenne_taille)/(formule))*(nombre_tete2-35000)+10);	
+	}	
+	
+   if(type_requete==="frequent")
+   {
+   
+            var formule=600000-35000;
+	var nombre_tete2=feature.properties.frequent;	
+    var  taille=Math.trunc(((moyenne_taille)/(formule))*(nombre_tete2-35000)+10);	
+	}	
+	
+	
+   //taille=taille/10;
+ //alert(nombre_tete);
+ 
+ if(taille<10) var couleur="red";
+ if(taille>=10 && taille<20) var couleur="#ADFF2F";
+ if(taille>=20 && taille<30) var couleur="#008B8B";
+ if(taille>=30 && taille<50) var couleur="green";
+ if(taille>=50) var couleur="#008B8B";
+ 
+ if(type_requete!=='*' && date_debut===0 && date_fin===0)
+ 
+ map.removeControl(temp_legende);
+ 
+ else
+ 
+ {
+ 
+ if(temp_legende) map.removeControl(temp_legende);
+	
+var htmlLegend1and2 = L.control.htmllegend({
+        position: 'bottomright',
+        legends: [{
+            name: 'Légende',
+            layer: FGgpx,
+            elements: [{
+                label: "<b><</b> "+Math.trunc((formule*10)/moyenne_taille),
+                html: '',
+                style: {
+                    'background-color': 'red',
+                    'width': '10px',
+                    'height': '10px',
+					'border-radius': '50%'
+                }
+            }, {
+                label: "<b><</b> "+Math.trunc((formule*20)/moyenne_taille),
+                html: '',
+                style: {
+                    'background-color': '#ADFF2F',
+                    'width': '20px',
+                    'height': '20px',
+					'border-radius': '50%'
+                }
+            }, {
+                label: "<b><</b> "+Math.trunc((formule*30)/moyenne_taille),
+                html: '',
+                style: {
+                    'background-color': '#008B8B',
+                    'width': '30px',
+                    'height': '30px',
+					'border-radius': '50%'
+                }
+            }, {
+                label: "<b><</b> "+Math.trunc((formule*50)/moyenne_taille),
+                html: '',
+                style: {
+                    'background-color': 'green',
+                    'width': '50px',
+                    'height': '50px',
+					'border-radius': '50%'
+                }
+            }]
+        }],
+        collapseSimple: true,
+        detectStretched: true,
+        collapsedOnInit: false,
+        defaultOpacity: 0.7,
+        visibleIcon: 'icon icon-eye',
+        hiddenIcon: 'icon icon-eye-slash'
+    })
+map.addControl(htmlLegend1and2)
+
+
+temp_legende=htmlLegend1and2;
+
+}
+   
+return L.marker(coordinates, {
+  icon: L.divIcon({
+    className: 'map-marker A',
+     iconSize:null,
+     html:'<div class="icon" style="background:red"><i class="fa fa-circle" style="color:'+couleur+';font-size:'+taille+'px" aria-hidden="false"></i></div><div class="arrow" />'
+  })
+});
+        },onEachFeature: onEachFeature
+     })
+	 
+	 
+ FGgpx.clearLayers();	 
+container_couche.addTo(FGgpx);
+
+
+container_couche.on('data:loaded', function(feature) {
+map.fitBounds(container_couche.getBounds());
+ 
+$("#chargement_zone").html('');
+	
+}.bind(this));	 
+	 
+
+	 
+	}afficher_donnees('*',0,0);
+		
+		// fonction qui nous renvois les données avec la géométrie en WKT
+function getTrace(type_trace,date_debut,date_fin){
+ $.ajax({
+           type: "POST",
+            url: "../demo4/php/getTrace_testt.php",
+			data:{type: type_trace,date_debut:date_debut,date_fin:date_fin}, // on peut ajouter des paramètres au POST: ici par exemple on peut récupérer le type : $_POST['type'] 
+            success: result,
+            dataType: "json"
+            });
+
+			function result(data){
+			   
+			    // on efface la  featureGroup qui contient les traces
+			    FGgpx.clearLayers();
+			   
+			 //les données de la requetes sont dans "data". la géometrie est en WKT dans le champs "wkt".
+			 //Ainsi pour accéder à la géometrie de la 1ere ligne : data[0].wkt
+		
+		    //on boucle sur chaque ligne de resultat
+			 for (var i = 0; i<data.length;i++){
+			    var str_wkt = data[i].wkt; // la chaine WKT
+			    
+				var tab1=data[i].lat;
+				var tab2=data[i].lon;
+			
+				var nombre=data[i].montant;
+				var virgule=",";
+				
+				
+				var up_selctionne=data[i].cat_up;
+				
+				$corchet1="[";
+				$corchet2="]";
+				var coord=$corchet1+tab1+virgule+tab2+$corchet2;
+				var nombre_tete_select=data[i].nombre_tete_select;
+				var min_select=data[i].min_select;
+				var max_select=data[i].max_select;
+				var frequent_select=data[i].frequent_select;
+				
+			if ( nombre_tete_select=='3') 
+				
+			{ 	
+			var nombre_tete2=data[i].nombre_tet;	
+            nombre_tete=((40-10)/(50000-100))*(nombre_tete2-100)+10;	
+
+			var formule1=((40-10)/(50000-100))*(8000-100)+10;
+			var formule2=((40-10)/(50000-100))*(750-100)+10;
+			var formule3=((40-10)/(50000-100))*(500-100)+10;
+			var formule4=((40-10)/(50000-100))*(100-100)+10;
+			
+			var indic=data[i].typologie;
+			var ico=".png";
+			var leg="<img src='images/leg.png' width='"+formule1+"px' height='10px' /><b style='color:red'>  <font color='blue'>8 000</font></b> <br><img src='images/leg.png' width='"+formule2+"px' height='15' /> <b style='color:red'> <font color='blue'>750</font></b> <br><img src='images/leg.png' width='"+formule3+"px' height='20' /> <b style='color:red'>  <font color='blue'> 500 </font></b><br><img src='images/leg.png' width='"+formule4+"px' height='20' /> <b style='color:red'>  <font color='blue'> 100 </font></b> ";
+			
+			var leg1="<img src='images/Q.png' width='20px' /> Marché Quotidien<br> <img width='20px' src='images/H.png' /> Marché Hebdomadaire<br>"; 
+			
+			var inf_entete="Nombre de têtes de mouton recensé dans les marchés à la date du : <b style='color:orangered'>"+ data[i].date +"</b>";
+			
+			var LeafIcon0 = L.Icon.extend({
+			options: {
+				
+				iconSize:     [nombre_tete, nombre_tete],
+				shadowSize:   [nombre_tete, nombre_tete],
+				iconAnchor:   [nombre_tete, nombre_tete],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [0, 0]
+			}
+		});
+
+		var g1="'";
+		var images20="images/";
+		var png20=ico;
+		var links20=images20+indic+png20;
+		
+		
+		var greenIcon = new LeafIcon0({iconUrl: 'images/leaf-green.png'}),
+			redIcon20 = new LeafIcon0({iconUrl: ""+links20}),
+			orangeIcon = new LeafIcon0({iconUrl: 'images/leaf-orange.png'});
+		
+		
+		
+		var la_feature0 = L.marker(JSON.parse(coord), {icon: redIcon20}); // transformation du wkt en format Leaflet avec omnivore
+				la_feature0.bindPopup('<fieldset style="border:1px solid green;padding:2px"><b>Nom Marché :</b> <b style="color:blue">' + data[i].marches +'</b><br><b>Typologie :</b> <b style="color:blue">' + data[i].typologie +'</b></br><fieldset  style="text-align:justify;border:1px solid #DCDCDC;border-radius:10px;padding:5px"><fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px">  <b>Nombre de têtes:</b> <b style="color:blue">' +data[i].nombre_tet +' </b></fieldset> <span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue"><a style="float:right" data-toggle="modal" href="#tendances_'+data[i].OGR_FID +'_nbrtete"><span ><i class="icon-plus-sign icon-white"></i>Historiques et tendances</a></fieldset></fieldset>' );
+			
+			
+			}
+			
+			else if ( min_select==3 ) 
+				
+			{ 	
+			var nombre_tete2=data[i].min;		
+            nombre_tete=((40-10)/(500000-35000))*(nombre_tete2-35000)+10;		
+			
+			var formule1=((40-10)/(500000-35000))*(300000-35000)+10;
+			var formule2=((40-10)/(500000-35000))*(150000-35000)+10;
+			var formule3=((40-10)/(500000-35000))*(75000-35000)+10;
+			var formule4=((40-10)/(500000-35000))*(35000-35000)+10;
+			
+			var indic=data[i].typologie;
+			var ico=".png";
+			var leg="<img src='images/leg.png' width='"+formule1+"px' height='10px' /><b style='color:red'>  <font color='blue'>300 000</font></b> <br><img src='images/leg.png' width='"+formule2+"px' height='15' /> <b style='color:red'> <font color='blue'>150 000</font></b> <br><img src='images/leg.png' width='"+formule3+"px' height='20' /> <b style='color:red'>  <font color='blue'> 75 000 </font></b><br><img src='images/leg.png' width='"+formule4+"px' height='20' /> <b style='color:red'>  <font color='blue'> 35 000 </font></b> ";
+			
+			var leg1="<img src='images/Q.png' width='20px' /> Marché Quotidien<br> <img width='20px' src='images/H.png' /> Marché Hebdomadaire<br>"; 
+			
+			var inf_entete="Prix Minimum pratiqué dans les marchés à la date du : <b style='color:orangered'>"+ data[i].date +"</b>";
+			
+			
+			var LeafIcon0 = L.Icon.extend({
+			options: {
+				
+				iconSize:     [nombre_tete, nombre_tete],
+				shadowSize:   [nombre_tete, nombre_tete],
+				iconAnchor:   [nombre_tete, nombre_tete],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [0, 0]
+			}
+		});
+
+		var g1="'";
+		var images20="images/";
+		var png20=ico;
+		var links20=images20+indic+png20;
+		
+		
+		var greenIcon = new LeafIcon0({iconUrl: 'images/leaf-green.png'}),
+			redIcon20 = new LeafIcon0({iconUrl: ""+links20}),
+			orangeIcon = new LeafIcon0({iconUrl: 'images/leaf-orange.png'});
+		
+		
+		
+		var la_feature0 = L.marker(JSON.parse(coord), {icon: redIcon20}); // transformation du wkt en format Leaflet avec omnivore
+				la_feature0.bindPopup('<fieldset style="border:1px solid green;padding:2px"><b>Nom Marché :</b> <b style="color:blue">' + data[i].marches +'</b><br><b>Typologie :</b> <b style="color:blue">' + data[i].typologie +'</b><br><fieldset  style="text-align:justify;border:1px solid #DCDCDC;border-radius:10px;padding:5px"><fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px"><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:red"><b>Prix pratiqués (FCFA)</b></span></br> <b>Mini:</b> <b style="color:red">' +data[i].min +' </b></br> </fieldset><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue"><a style="float:right" data-toggle="modal" href="#tendances_'+data[i].OGR_FID +'_minselect"><span ><i class="icon-plus-sign icon-white"></i>Historiques et tendances</a></fieldset></fieldset>' );
+			
+			}
+			
+			else if ( max_select==3 ) 
+				
+			{ 	
+			var nombre_tete2=data[i].max;		
+              nombre_tete=((40-10)/(600000-35000))*(nombre_tete2-35000)+10;		
+			
+			var formule1=((40-10)/(600000-35000))*(300000-35000)+10;
+			var formule2=((40-10)/(600000-35000))*(150000-35000)+10;
+			var formule3=((40-10)/(600000-35000))*(75000-35000)+10;
+			var formule4=((40-10)/(600000-35000))*(35000-35000)+10;
+			
+			var indic=data[i].typologie;
+			var ico=".png";
+			var leg="<img src='images/leg.png' width='"+formule1+"px' height='10px' /><b style='color:red'>  <font color='blue'>300 000</font></b> <br><img src='images/leg.png' width='"+formule2+"px' height='15' /> <b style='color:red'> <font color='blue'>150 000</font></b> <br><img src='images/leg.png' width='"+formule3+"px' height='20' /> <b style='color:red'>  <font color='blue'> 75 000 </font></b><br><img src='images/leg.png' width='"+formule4+"px' height='20' /> <b style='color:red'>  <font color='blue'> 35 000 </font></b> ";
+			
+			var leg1="<img src='images/Q.png' width='20px' /> Marché Quotidien<br> <img width='20px' src='images/H.png' /> Marché Hebdomadaire<br>"; 
+			
+			var inf_entete="Prix Maximum pratiqué dans les marchés à la date du : <b style='color:orangered'>"+ data[i].date +"</b>";
+			
+			
+			var LeafIcon0 = L.Icon.extend({
+			options: {
+				
+				iconSize:     [nombre_tete, nombre_tete],
+				shadowSize:   [nombre_tete, nombre_tete],
+				iconAnchor:   [nombre_tete, nombre_tete],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [0, 0]
+			}
+		});
+
+		var g1="'";
+		var images20="images/";
+		var png20=ico;
+		var links20=images20+indic+png20;
+		
+		
+		var greenIcon = new LeafIcon0({iconUrl: 'images/leaf-green.png'}),
+			redIcon20 = new LeafIcon0({iconUrl: ""+links20}),
+			orangeIcon = new LeafIcon0({iconUrl: 'images/leaf-orange.png'});
+			
+			
+			
+			var la_feature0 = L.marker(JSON.parse(coord), {icon: redIcon20}); // transformation du wkt en format Leaflet avec omnivore
+				la_feature0.bindPopup('<fieldset style="border:1px solid green;padding:2px"><b>Nom Marché :</b> <b style="color:blue">' + data[i].marches +'</b><br><b>Typologie :</b> <b style="color:blue">' + data[i].typologie +'</b><br><fieldset  style="text-align:justify;border:1px solid #DCDCDC;border-radius:10px;padding:5px"> <fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px"><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:red"><b>Prix pratiqués (FCFA)</b></span></br>  <b>Max:</b> <b style="color:blue">' +data[i].max +' </b></br> </fieldset><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue"><a style="float:right" data-toggle="modal" href="#tendances_'+data[i].OGR_FID +'_maxselect"><span ><i class="icon-plus-sign icon-white"></i>Historiques et tendances</a></fieldset></fieldset>' );
+			
+			}
+			
+			else if ( frequent_select==3 ) 
+				
+			{ 	
+			var nombre_tete2=data[i].frequent;	
+            nombre_tete=((40-10)/(600000-35000))*(nombre_tete2-35000)+10;		
+			
+			var formule1=((40-10)/(600000-35000))*(300000-35000)+10;
+			var formule2=((40-10)/(600000-35000))*(150000-35000)+10;
+			var formule3=((40-10)/(600000-35000))*(75000-35000)+10;
+			var formule4=((40-10)/(600000-35000))*(35000-35000)+10;
+			
+			var indic=data[i].typologie;
+			var ico=".png";
+			var leg="<img src='images/leg.png' width='"+formule1+"px' height='10px' /><b style='color:red'>  <font color='blue'>300 000</font></b> <br><img src='images/leg.png' width='"+formule2+"px' height='15' /> <b style='color:red'> <font color='blue'>150 000</font></b> <br><img src='images/leg.png' width='"+formule3+"px' height='20' /> <b style='color:red'>  <font color='blue'> 75 000 </font></b><br><img src='images/leg.png' width='"+formule4+"px' height='20' /> <b style='color:red'>  <font color='blue'> 35 000 </font></b> ";
+			
+			var leg1="<img src='images/Q.png' width='20px' /> Marché Quotidien<br> <img width='20px' src='images/H.png' /> Marché Hebdomadaire<br>"; 
+			
+			var inf_entete="Prix le Plus fréquent pratiqué dans les marchés à la date du : <b style='color:orangered'>"+ data[i].date +"</b>";
+			
+			var LeafIcon0 = L.Icon.extend({
+			options: {
+				
+				iconSize:     [nombre_tete, nombre_tete],
+				shadowSize:   [nombre_tete, nombre_tete],
+				iconAnchor:   [nombre_tete, nombre_tete],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [0, 0]
+			}
+		});
+
+		var g1="'";
+		var images20="images/";
+		var png20=ico;
+		var links20=images20+indic+png20;
+		
+		
+		var greenIcon = new LeafIcon0({iconUrl: 'images/leaf-green.png'}),
+			redIcon20 = new LeafIcon0({iconUrl: ""+links20}),
+			orangeIcon = new LeafIcon0({iconUrl: 'images/leaf-orange.png'});
+		
+		
+		
+		var la_feature0 = L.marker(JSON.parse(coord), {icon: redIcon20}); // transformation du wkt en format Leaflet avec omnivore
+				la_feature0.bindPopup('<fieldset style="border:1px solid green;padding:2px"><b>Nom Marché :</b> <b style="color:blue">' + data[i].marches +'</b><br><b>Typologie :</b> <b style="color:blue">' + data[i].typologie +'</b><fieldset  style="text-align:justify;border:1px solid #DCDCDC;border-radius:10px;padding:5px">  <fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px"><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:red"><b>Prix pratiqués (FCFA)</b></span></br> <b>plus fréquent:</b> <b style="color:green">' +data[i].frequent +' </b></fieldset><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue"><a style="float:right" data-toggle="modal" href="#tendances_'+data[i].OGR_FID +'_frequent"><span ><i class="icon-plus-sign icon-white"></i>Historiques et tendances</a></fieldset></fieldset>' );
+			
+			
+			}
+			
+			else
+			{
+				
+            var nombre_tete= 11;			
+			var indic=data[i].typologie;
+			var ico=".ico";
+			var leg="Aucune information selectionnée";
+			
+			var leg1="<img src='images/Q.ico' width='20px' /> Marché Quotidien<br> <img width='20px' src='images/H.ico' /> Marché Hebdomadaire<br>"; 
+			
+			var inf_entete="Informations marchés à la date du : <b style='color:orangered'>"+ data[i].date +"</b>";
+			
+			
+			var LeafIcon0 = L.Icon.extend({
+			options: {
+				
+				iconSize:     [nombre_tete, nombre_tete],
+				shadowSize:   [nombre_tete, nombre_tete],
+				iconAnchor:   [nombre_tete, nombre_tete],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [0, 0]
+			}
+		});
+
+		var g1="'";
+		var images20="images/";
+		var png20=ico;
+		var links20=images20+indic+png20;
+		
+		
+		var greenIcon = new LeafIcon0({iconUrl: 'images/leaf-green.png'}),
+			redIcon20 = new LeafIcon0({iconUrl: ""+links20}),
+			orangeIcon = new LeafIcon0({iconUrl: 'images/leaf-orange.png'});
+		
+		
+		
+		var la_feature0 = L.marker(JSON.parse(coord), {icon: redIcon20}); // transformation du wkt en format Leaflet avec omnivore
+				la_feature0.bindPopup('<fieldset style="border:1px solid green;padding:2px"><b>Nom Marché :</b> <b style="color:blue">' + data[i].marches +'</b><br><b>Typologie :</b> <b style="color:blue">' + data[i].typologie +'</b><br> <b>A la date du :</b> <b style="color:orangered">' + data[i].date +'</b></br><fieldset  style="text-align:justify;border:1px solid #DCDCDC;border-radius:10px;padding:5px"> <legend style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue">Informations Générales</legend><fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px">  <b>Nombre de têtes:</b> <b style="color:blue">' +data[i].nombre_tet +' </b></fieldset> <fieldset style="border-bottom:1px solid #DCDCDC;margin-bottom:3px"><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:red"><b>Prix pratiqués (FCFA)</b></span></br> <b>Mini:</b> <b style="color:red">' +data[i].min +' </b></br> <b>Max:</b> <b style="color:blue">' +data[i].max +' </b></br> <b>plus fréquent:</b> <b style="color:green">' +data[i].frequent +' </b></fieldset><span style="font-size:9pt;margin-bottom:-2px;text-align:center;color:blue"><a style="float:right" data-toggle="modal" href="#tendances_'+data[i].OGR_FID +'"><span ><i class="icon-plus-sign icon-white"></i>Historiques et tendances</a></fieldset></fieldset>' );
+			
+			
+			}
+			
+			
+			
+		
+		
+		
+		
+		
+				
+			
+			   
+			    //on l'ajoute à la featureGroup
+				la_feature0.bindLabel('Marché <b style="color:blue">'+data[i].marches+'</b>');
+				la_feature0.addTo(FGgpx);
+				
+				
+				 
+				
+			 }//fin de la boucle
+			 
+			  $("#march").html('<fieldset style="text-align:center"><b style="float:;color:red">Typologies Marchés</b></fieldset>'+leg1+' ');
+			  $("#infrast").html('<fieldset style="text-align:center"><b style="float:;color:blue">Echelle des valeurs</b><br></fieldset><fieldset style="text-align:center">'+leg+'</fieldset>');
+			   $("#inf_entete").html('<fieldset style="text-align:center;border:1px solid #F8F8FF">'+inf_entete+'</fieldset>');
+			  
+			 //on zoom sur l'ensemble des traces affichées
+			 
+		
+			}
+}
+//getTrace("*");
+
+
+
+ var table_marche=$('#example').DataTable( {
+			ajax: {
+            "url": 'api/get_liste_marche.php'
+        },
+		language: {
+					"url": "assets/i18n/datatable.json"
+			},
+        columns: [
+
+						{"data": "nom"},
+						{"data": "region"}
+
+        ]
+
+    } );
+	
+	$('#example tbody').on('click',  'tr', function (e) {
+     e.preventDefault();	
+	var data = table_marche.row( $(this)).data();
+	$("#type_stats").show();
+	$("#liste_table_marche").hide();
+	$("#list_all_market").show();
+	change_affichage_type_stats(1);
+	
+	afficher_donnees(data.id,0,0);
+	   var stats_site=get_stats(data.id);
+
+var categorie=stats_site[0];
+var valeurs=stats_site[1];
+
+
+if(!valeurs)
+valeurs=[];
+
+
+var valeurs = valeurs.map(function (x) {
+  return parseInt(x, 10);
+});	  
+	 
+	 /* -- Graphe -- */
+Highcharts.chart('container1', {
+	chart: {
+			type: 'line'
+	},
+	title: {
+				text: " Nombre de tete du marché "+data.nom
+	},
+	subtitle: {
+			text: 'Source: Plateforme AVSF'
+	},
+	xAxis: {
+			categories: categorie
+	},
+	yAxis: {
+			title: {
+						text: "Valeurs"
+			}
+	},
+	plotOptions: {
+			line: {
+					dataLabels: {
+							enabled: true
+					},
+					enableMouseTracking: false
+			}
+	},
+	series: [{
+			name: 'Valeurs par date',
+			data: valeurs
+	}]
+});
+
+
+Highcharts.chart('container2', {
+	chart: {
+			type: 'line'
+	},
+	title: {
+				text: "Min "+data.nom
+	},
+	subtitle: {
+			text: 'Source: Plateforme AVSF'
+	},
+	xAxis: {
+			categories: categorie
+	},
+	yAxis: {
+			title: {
+						text: "Valeurs"
+			}
+	},
+	plotOptions: {
+			line: {
+					dataLabels: {
+							enabled: true
+					},
+					enableMouseTracking: false
+			}
+	},
+	series: [{
+			name: 'Valeurs par date',
+			data: stats_site[2]
+	}]
+});
+
+
+Highcharts.chart('container3', {
+	chart: {
+			type: 'line'
+	},
+	title: {
+				text: "Prix Max "+data.nom
+	},
+	subtitle: {
+			text: 'Source: Plateforme AVSF'
+	},
+	xAxis: {
+			categories: categorie
+	},
+	yAxis: {
+			title: {
+						text: "Valeurs"
+			}
+	},
+	plotOptions: {
+			line: {
+					dataLabels: {
+							enabled: true
+					},
+					enableMouseTracking: false
+			}
+	},
+	series: [{
+			name: 'Valeurs par date',
+			data: stats_site[3]
+	}]
+});
+
+
+
+Highcharts.chart('container4', {
+	chart: {
+			type: 'line'
+	},
+	title: {
+				text: "Prix Fréquent "+data.nom
+	},
+	subtitle: {
+			text: 'Source: Plateforme AVSF'
+	},
+	xAxis: {
+			categories: categorie
+	},
+	yAxis: {
+			title: {
+						text: "Valeurs"
+			}
+	},
+	plotOptions: {
+			line: {
+					dataLabels: {
+							enabled: true
+					},
+					enableMouseTracking: false
+			}
+	},
+	series: [{
+			name: 'Valeurs par date',
+			data: stats_site[4]
+	}]
+});
+	  
+      
+    });
+
+	
+	
+	var get_stats = function (id) {
+	var categories=[];
+	var valeurs=[];
+	var sous_categories=[];
+	var nombre_tet=[];
+	var min=[];
+	var max=[];
+	var frequent=[];
+	
+		$.ajax({
+		 "url": 'api/get_stats.php?id='+id,
+			type: 'GET',
+			'async': false,
+			'global': false,
+			contentType : 'application/json; charset=UTF-8',
+			'success': function (result) {
+		for(var k=0;k<result.length;k++)
+		{
+		var date=result[k].jour+' '+mois[result[k].mois];
+        sous_categories.push(date);
+		nombre_tet.push(result[k].nombre_tet);
+		min.push(result[k].min);
+		max.push(result[k].max);
+		frequent.push(result[k].frequent);
+		}
+
+categories.push(sous_categories);
+categories.push(nombre_tet);
+categories.push(min);
+categories.push(max);
+categories.push(frequent);
+				}
+		});
+
+		return categories;
+}
+
+
+function change_affichage_type_stats(num_div)
+{
+for (var i=1;i<6;i++)
+$("#container"+i).hide();
+$("#container"+num_div).show();
+}
+
+function active_div(id_div)
+{
+$("#list_all_market").hide();
+for (var i=1;i<6;i++)
+$("#container"+i).hide();
+$("#type_stats").hide();
+$("#"+id_div).show();
+}
+
+
+
+
+    </script>

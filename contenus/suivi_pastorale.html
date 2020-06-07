@@ -1,0 +1,423 @@
+<style>
+       
+      #map_infos_pratiques {
+            height: 400px;
+			width:18px;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        etat_true{color:green}
+		etat_false{color:red}
+		
+		.button_presentation{
+		padding:10px
+		}
+		
+		
+#calendarContainer,
+#organizerContainer {
+  float: left;
+  margin: 0px;
+  width:60%
+}
+
+#sidebar
+{
+border:none;
+}
+.sidebar-tabs
+{
+border:1px solid #DCDCDC
+}
+.sidebar-content
+{
+width:78%;
+}
+    </style>
+	<!-- partial:index.partial.html -->
+
+<script src="js/moment.min.js"></script>
+<!-- partial -->
+
+
+  
+		<link rel="stylesheet" href="css/vanilla-calendar-min.css">
+        <script src="js/vanilla-calendar-min.js"></script>
+  
+<div class="presentation">
+
+<div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li title="Pluviométrie" style="font-size:15px" class="button_presentation"><a href="#fire" role="tab"><i class="fa fa-cloud"></i></a></li><hr>
+				<li title="Biomasse" style="font-size:15px" class="button_presentation"><a href="#maladie" role="tab"><i class="fa fa-tree"></i></a></li><hr>
+				<li title="Mares" style="font-size:15px" class="button_presentation"><a href="#vol_betail" role="tab"><i class="fa fa-water"></i></a></li> <hr>
+				
+				
+                
+            </ul>
+
+           
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="fire">
+                <h1 class="sidebar-header">
+                  Biomasse
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+              <div id="myCalendar" class="vanilla-calendar" style="margin-left:-20px"></div>				
+
+
+             
+            </div>
+
+            <div class="sidebar-pane" id="maladie">
+                <h1 class="sidebar-header">Pluviométrie<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+
+
+
+<div class="">
+           
+            <div class="area-buttons" style="display:none">
+                <button class="info" name="pastDates" style="display:none">Disable past dates</button>
+                <button class="info" name="availableDates" id="availableDates_cl" style="display:none">Set available dates</button>
+                <button class="info" name="availableWeekDays" style="display:none">Set available weekdays</button>
+            </div>
+            <div id="myCalendar2" class="vanilla-calendar" style="margin-left:-20px"></div>
+            
+            
+            
+        </div>
+       
+
+
+				
+            </div>
+
+            <div class="sidebar-pane" id="vol_betail">
+                <h1 class="sidebar-header">Mares<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+				
+				
+				
+<div id="myCalendar3" class="vanilla-calendar" style="margin-left:-20px"></div>				
+							
+            </div>
+
+           
+        </div>
+		
+		
+		  <!-- Tab panes -->
+        
+		
+		
+		
+		
+		
+    </div>
+	
+	<div class="row">
+
+<div class="col-md-1 col-lg-1">	
+<div id="map_infos_pratiques" class="sidebar-map"></div>
+</div>
+
+<div class="col-md-11 col-lg-11" id="affichage_doc">	
+Test moi
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+ <script>
+		
+var get_suivi_agro = function (type_doc) {
+            var liste_ent;
+          
+          
+                $.ajax({
+                  url: 'api/get_suivi_agro.php?type_doc='+type_doc,
+                  type: 'GET',
+                  'async': false,
+                  'global': false,
+                  contentType : 'application/json; charset=UTF-8',
+                 // data: obj,
+                    'success': function (result) {
+                      liste_ent=result;
+                   
+                    }
+                });
+          
+                return liste_ent;
+            }
+
+			var all_date=get_suivi_agro(1);
+			var all_date2=get_suivi_agro(2);
+			var all_date3=get_suivi_agro(3);
+            let pastDates = true, availableDates = false, availableWeekDays = false
+            
+            let calendar = new VanillaCalendar({
+                selector: "#myCalendar",
+                months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+                shortWeekday: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                onSelect: (data, elem) => {
+				var leFichier=data.data.fichier;
+				affichage_contenu(leFichier);
+                 //console.log(data.data.fichier)
+                }
+            })
+			
+			let calendar2 = new VanillaCalendar({
+                selector: "#myCalendar2",
+                months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+                shortWeekday: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                onSelect: (data, elem) => {
+				var leFichier=data.data.fichier;
+				affichage_contenu(leFichier);
+                 //console.log(data.data.fichier)
+                }
+            })
+			
+			let calendar3 = new VanillaCalendar({
+                selector: "#myCalendar3",
+                months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+                shortWeekday: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                onSelect: (data, elem) => {
+				var leFichier=data.data.fichier;
+				affichage_contenu(leFichier);
+                 //console.log(data.data.fichier)
+                }
+            })
+            
+            let btnPastDates = document.querySelector('[name=pastDates]')
+            btnPastDates.addEventListener('click', () => {
+                pastDates = !pastDates
+                calendar.set({pastDates: pastDates})
+                btnPastDates.innerText = `${(pastDates ? 'Disable' : 'Enable')} past dates`
+            })
+            
+            let btnAvailableDates = document.querySelector('[name=availableDates]')
+            btnAvailableDates.addEventListener('click', () => {
+                availableDates = !availableDates
+                btnAvailableDates.innerText = `${(availableDates ? 'Clear available dates' : 'Set available dates')}`
+                if (!availableDates) {
+                    calendar.set({availableDates: [], datesFilter: false})
+                    return
+                }
+                let dates = () => {
+                    let result = []
+                    for (let i = 0; i <  all_date.length; ++i) {
+					
+					//alert(i);
+					 //for (var j = 0; j < all_date.length; j++)
+                     //   if (i % 2) continue
+					 
+                        //let date = new Date(new Date())
+						//alert(moment("2019-12-11", 'YYYY-MM-DD'));
+                       let date = new Date(moment(all_date[i].date_donnees, 'YYYY-MM-DD'))
+                        result.push({fichier:all_date[i].nom_fichier,date: `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, 0)}-${String(date.getDate()).padStart(2, 0)}`})
+                    }
+                    return result
+                }
+                calendar.set({availableDates: dates(), availableWeekDays: [], datesFilter: true})
+				
+				
+				
+				let dates2 = () => {
+                    let result = []
+                    for (let i = 0; i <  all_date2.length; ++i) {
+					
+					//alert(i);
+					 //for (var j = 0; j < all_date.length; j++)
+                     //   if (i % 2) continue
+					 
+                        //let date = new Date(new Date())
+						//alert(moment("2019-12-11", 'YYYY-MM-DD'));
+						let date = new Date(moment(all_date2[i].date_donnees, 'YYYY-MM-DD'))
+                        result.push({fichier:all_date2[i].nom_fichier,date: `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, 0)}-${String(date.getDate()).padStart(2, 0)}`})
+                    }
+                    return result
+                }
+                calendar2.set({availableDates: dates2(), availableWeekDays: [], datesFilter: true})
+				
+				
+				let dates3 = () => {
+                    let result = []
+                    for (let i = 0; i <  all_date3.length; ++i) {
+					
+					//alert(i);
+					 //for (var j = 0; j < all_date.length; j++)
+                     //   if (i % 2) continue
+					 
+                        //let date = new Date(new Date())
+						//alert(moment("2019-12-11", 'YYYY-MM-DD'));
+						let date = new Date(moment(all_date3[i].date_donnees, 'YYYY-MM-DD'))
+                        result.push({fichier:all_date3[i].nom_fichier,date: `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, 0)}-${String(date.getDate()).padStart(2, 0)}`})
+                    }
+                    return result
+                }
+                calendar3.set({availableDates: dates3(), availableWeekDays: [], datesFilter: true})
+				
+				
+				
+            })
+            $("#availableDates_cl").click();
+			
+            let btnAvailableWeekDays = document.querySelector('[name=availableWeekDays]')
+            btnAvailableWeekDays.addEventListener('click', () => {
+                availableWeekDays = !availableWeekDays
+                btnAvailableWeekDays.innerText = `${(availableWeekDays ? 'Clear available weekdays' : 'Set available weekdays')}`
+                if (!availableWeekDays) {
+                    calendar.set({availableWeekDays: [], datesFilter: false})
+                    return
+                }
+                let days = [{
+                    day: 'monday'
+                }, {
+                    day: 'tuesday'
+                }, {
+                    day: 'wednesday'
+                }, {
+                    day: 'friday'
+                }]
+                calendar.set({availableWeekDays: days, availableDates: [], datesFilter: true})
+            })
+        </script>
+
+
+
+
+
+
+
+
+
+
+<script>
+        var map = L.map('map_infos_pratiques');
+        map.setView([14, -14], 7);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'ALERTES'
+        }).addTo(map);
+
+        var marker = L.marker([51.2, 7]).addTo(map);
+
+        var sidebar = L.control.sidebar('sidebar').addTo(map);
+		
+	var feux = L.featureGroup();	
+	var maladies_c = L.featureGroup();
+	var vols_c = L.featureGroup();
+	var forage_panne = L.featureGroup();
+	
+	var url_serveur="http://213.154.74.35:8080";
+
+			 var fond = L.tileLayer.wms(url_serveur+"/geoserver/wms", {
+                        layers:  'praps:regions',
+					    <!-- cql_filter:"denomination='Région'", -->
+                        format: 'image/png',
+                        transparent: true,
+						visible: true,
+						isBaseLayer: false
+                    });
+
+ map.addLayer(fond);
+ 
+ var baseMaps = [
+			                {
+								groupName : "Fond de carte",
+								expanded : true,
+								layers    : {
+
+									"OpenStreetMaps" : fond
+								}
+					        }
+			];
+
+			var overlays = [
+
+
+							 {
+								groupName : "Alés",
+								expanded : true,
+								layers    : {
+									"Feux de brousse"     :  feux,
+									"Maladies animales"     :  maladies_c,
+									"Vol de bétail"     :  vols_c,
+									"Forage en panne"     :  forage_panne
+
+								}
+                             }
+
+
+
+
+			];
+
+			var options = {
+				container_width 	: "300px",
+				group_maxHeight     : "80px",
+				//container_maxHeight : "350px",
+				exclusive       	: false,
+				collapsed : true,
+				position: 'topright'
+			};
+
+		    var control = L.Control.styledLayerControl(baseMaps, overlays,options);
+			map.addControl(control);
+
+control.selectLayer(feux);
+control.selectLayer(maladies_c);
+control.selectLayer(vols_c);
+control.selectLayer(forage_panne);
+
+		
+    </script>
+	
+	
+<script>
+
+
+</script>
+
+
+
+
+
+	
+	
+	
+	
+	<script>
+ 
+  function affichage_contenu(nom_contenu){
+	   
+	 
+
+     $("#affichage_doc").html("<img src='documents/donnees_suivi/"+nom_contenu+"' width='100%' height='500px'></iframe>");
+	 $(".sidebar-close").click();
+	
+       }
+	   
+	   affichage_contenu("biomasse1.png");
+		
+		
+		
+
+    </script>
+	
+	
+	

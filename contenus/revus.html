@@ -1,0 +1,106 @@
+<style>
+
+tr{border:1px solid #DCDCDC}
+
+	table#example.dataTable tbody tr:hover {
+            background-color: #ffa;
+			cursor:pointer
+}
+
+   
+  .selectionner_ {
+    background: yellow;
+  }
+  .highlight {
+    background: yellow;
+  }
+ </style>
+  
+     <table id="example"  class="table table-striped table-bordered" style="width:100%">
+	 <caption style="background:red;font-weight:bold">PUBLICATIONS REVUE TERRITOIRE D'AFRIQUE</caption>
+
+	 <thead>
+	 <tr>
+	 <th>Numero</th>
+	
+	 <th>Titre</th>
+	 
+	 <th>Article, auteur</th>
+	 </tr>
+	 </thead>
+	 <tbody>
+	 </tbody>
+	 </table>
+
+ 
+		
+<script>
+$("li").removeClass("active");
+$("#publications_revus").addClass("active");
+function $_GET(param) {
+	var vars = {};
+	window.location.href.replace( location.hash, '' ).replace( 
+		/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+		function( m, key, value ) { // callback
+			vars[key] = value !== undefined ? value : '';
+		}
+	);
+
+	if ( param ) {
+		return vars[param] ? vars[param] : null;	
+	}
+	
+	
+	return vars;
+}
+
+
+function charger_frame(revue,description){
+
+$("#revu_frame").html('<iframe src="flipbook/web/viewer.html?revue='+revue+'" style="width:100%;height:500px"></iframe>');	
+$("#pres_rev").html(description);
+$("#pre_element").html("Présentation de la revue");	
+
+}
+var revue = $_GET('revue');	
+charger_frame("REVUE COUV.", "<div style='text-align:center'><b>Aménagement du territoire et reconfigurations des espaces ouest-africains Vers de nouvelles dynamiques</b></div> <br>La littérature scientifique jusqu’ici n’a accordé qu’une place très limitée au développement territorial en Afrique. Pour le besoin des décideurs africains, des organismes de coopération, des instituts et centres de recherche, et des chercheurs comme des acteurs locaux il faut disposer d’une information crédible, documentée, prospective et traitée de manière objective par des spécialistes.C’est pour palier à ce manque qu’il a été décidé de mettre en place une revue semestrielle.");
+	
+$("#bar_gauche").html('');
+$("#pricing").show();
+
+var table_revu=$('#example').DataTable( {
+			ajax: {
+            "url": 'api/get_liste_revu.php'
+        },
+		language: {
+					"url": "assets/i18n/datatable.json"
+			},
+			 dom: "lftBp",
+        columns: [
+
+						{"data": "gid"},
+						{"data": "intitule"},
+						{"data": "description"}
+
+        ]
+
+    } );
+	
+	$('#example tbody').on('click',  'tr', function (e) {
+     e.preventDefault();	
+	var data = table_revu.row( $(this)).data();
+	
+	table_revu.row( $("tr").removeClass( "selectionner_" ));
+	table_revu.row( $(this).addClass( "selectionner_" ));
+	//table_revu.row( $("tr").css("background-color","white"));
+	var revue = data.revu;
+	var description = data.description;
+	charger_frame(revue,description);
+	 afficher_doc(revue,description);
+	//href="documents/donnees_suivi/'+result.data[i].revu+'" target="_blank"><i class="icon-chevron-right"></i> '+result.data[i].intitule+'</a>
+    });
+
+
+
+
+</script>

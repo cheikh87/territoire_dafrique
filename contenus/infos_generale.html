@@ -1,0 +1,61 @@
+<style>
+       
+      #map_infos_pratiques {
+            height: 400px;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        etat_true{color:green}
+		etat_false{color:red}
+		
+		.button_presentation{
+		padding:10px
+		}
+		
+		.alert_et_sui{
+		border:1px solid #DCDCDC
+		}
+ .alert_et_sui:hover{
+		border:4px solid red;
+		cursor:pointer
+		}
+    </style>
+<!-- Blog-Section -->
+<div class="presentation">
+    <section class="blog">
+        <div class="">
+            <!-- Container -->
+            <div class="">
+                <div class="row" style="min-height:250px">
+				 <div class="col-lg-1 col-md-1" style='border:1px solid #DCDCDC;'>
+                    </div>
+                    <div class="col-lg-5 col-md-5 alert_et_sui" onclick="charger_contenu('alertes.html','infos_generale')">
+					
+					
+
+					   <h4 class="heading" style="text-transform:uppercase;text-align:center;font-weight:bold;color:red">Alertes</h4>
+                            <img src="images/alertes.png" >
+
+
+
+                    </div>
+					 <div class="col-lg-1 col-md-1" style='border:1px solid #DCDCDC;'>
+                    </div>
+					
+                     <div class="col-lg-5 col-md-5 alert_et_sui" onclick="charger_contenu('suivi_pastorale.html','infos_generale')">
+
+                            <h2 class="heading" style="text-transform:uppercase;text-align:center;font-weight:bold;color:blue">Suivi pastorale</h2>
+                            <img src="images/suivi.png" >
+
+
+                    </div>
+
+					
+                </div>
+            </div>
+            <!-- /. Container -->
+        </div>
+    </section>
+	
+	
+	

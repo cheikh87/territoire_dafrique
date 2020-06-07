@@ -1,0 +1,167 @@
+<div class="presentation">
+
+<div class="row">
+
+
+<div class="container">
+			<ul id="gn-menu" class="gn-menu-main">
+				<li class="gn-trigger">
+					<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+					<nav class="gn-menu-wrapper" style="border:1px solid #DCDCDC">
+						<div class="gn-scroller">
+							<ul class="gn-menu">
+								<li class="gn-search-item">
+									<select id="list_types" onchange="donnes_aff(this.value)"> </select>
+								</li>
+								<li >
+								<ul class="gn-submenu" id="list_doc" style="overflow:auto;max-height:300px">
+									
+							    </ul>
+									
+								</li>
+								
+							</ul>
+						</div><!-- /gn-scroller -->
+					</nav>
+				</li>
+				<li id="titre_doc"><a href="#">Affichage des documents pratiques</a></li>
+				
+			</ul>
+			<header id="affichage_doc" style="padding:40px;margin:5px;min-height:500px">
+				
+			</header> 
+		</div><!-- /container -->
+		<script src="js/classie.js"></script>
+		<script src="js/gnmenu.js"></script>
+		<script>
+			new gnMenu( document.getElementById( 'gn-menu' ) );
+		</script>
+</div>
+
+
+
+
+
+
+
+<style type="text/css">
+
+	#nom_doc
+	{
+		width: 150px;
+		margin-left: 100px;
+	}
+	.col-lg-4 col-md-4
+	{
+		width: 200px;
+	}
+</style>
+
+<script type="text/javascript">
+
+   function get_bases(){
+
+
+
+ $.ajax({
+           type: "POST",
+            url: "api/get_infos_preatiques.php",
+			data:{type: "a"},
+            success: result11,
+            dataType: "json"
+            });
+
+			function result11(data){
+			console.log(data);
+			$("#nom_doc").html('');
+
+			 for (var k = 0; k<data.length;k++)
+			$("#nom_doc").append('<div class="col-lg-6 col-md-6" style="border:1px solid #DCDCDC;">'+
+								          '<a href="javascript:affichage_contenu(\''+data[k].nom_document+'\')">'+data[k].nom_document+'</a>'+
+											     '</div>');
+
+			 }//fin de la boucle
+
+
+
+			 }
+
+
+
+var prec_class;
+       function affichage_contenu(dossier,nom_contenu,description,gid){
+	   
+	 
+
+     $("#affichage_doc").html("<iframe src='documents/"+dossier+"/"+nom_contenu+"' width='100%' height='500px'></iframe>");
+	 $("#titre_doc").html('<a href="#">'+description+'</a>');		
+	 $('#'+prec_class).removeClass("active");
+     $('#article_'+gid).addClass("active");  
+	 prec_class='article_'+gid;
+	 
+	
+	 
+
+       }
+affichage_contenu("type_1","Article_informatif_sur_les_forages.pdf","Article informatif sur les forages",19)
+       //affichage_contenu("fw8ben.pdf");
+	   
+	   var get_data = function (type_doc) {
+    var resultat;
+    $.ajax({
+        "url": 'api/get_infos_pratiques.php?type_doc='+type_doc,
+        type: 'GET',
+        'async': false,
+        'global': false,
+        contentType: 'application/json; charset=UTF-8',
+        'success': function (result) {
+            resultat = result;
+        }
+    });
+
+    return resultat;
+}
+
+var get_types = function () {
+                var liste_ent="<option value=''>Sélectionner</option>";
+                    $.ajax({
+                      url: 'api/get_types_infos_pratiques.php',
+                      type: 'GET',
+                      'async': false,
+                      'global': false,
+                      contentType : 'application/json; charset=UTF-8',
+                     // data: obj,
+                        'success': function (result) {
+              
+                        for(var k=0;k<result.length;k++)
+                        {
+                          liste_ent +="<option value='"+result[k].gid+"'>"+result[k].type_doc+"</option>";
+                        }
+              
+                        }
+                    });
+              
+                    return liste_ent;
+                }
+	
+var mesTypes=get_types();
+    $('#list_types').empty();
+    $('#list_types').append(mesTypes);	
+	
+donnes_aff(1);	
+
+function donnes_aff(type_doc)	
+
+{
+$("#list_doc").html("");
+var donness=get_data(type_doc);
+
+for (k in donness.data)	
+$("#list_doc").append('<li id="article_'+donness.data[k].gid+'"><a href="javascript:affichage_contenu(\'type_'+donness.data[k].type_doc+'\',\''+donness.data[k].nom_document+'\',\''+donness.data[k].description+'\','+donness.data[k].gid+')">'+donness.data[k].description+'</a></li>');
+
+}
+
+
+	
+	
+</script>
